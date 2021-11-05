@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 
 /*
@@ -14,5 +15,6 @@ use App\Http\Controllers\RegisterController;
 */
 
 Route::post('/user/register', RegisterController::class);
+Route::post('/user/login', LoginController::class);
 
 

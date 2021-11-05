@@ -28,4 +28,29 @@ class UserTest extends TestCase
         $response = $this->postJson('/api/user/register');
         $response->assertInvalid(['name', 'email']);
     }
+
+    /**
+     * Test user login.
+     *
+     * @return void
+     */
+    public function test_login()
+    {
+        $user = User::factory()->create();
+        $response = $this->postJson('/api/user/login',
+            [
+                'email' => $user->email,
+                'password' => 'password'
+            ]
+        );
+        $response->assertOk();
+        $this->assertDatabaseCount('personal_access_tokens', 1);
+        $response = $this->postJson('/api/user/login',
+            [
+                'email' => $user->email,
+                'password' => 'passwor'
+            ]
+        );
+        $response->assertInvalid(['email']);
+    }
 }
