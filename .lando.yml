@@ -1,0 +1,19 @@
+name: lupusweb
+recipe: laravel
+config:
+  php: '8.0'
+  webroot: public
+  via: nginx
+  database: postgres:13
+  xdebug: true
+  password: postgres
+services:
+  node:
+    type: node:14
+    globals:
+      npm: 7
+tooling:
+  npm:
+    service: node
+  npx:
+    service: node
