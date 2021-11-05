@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RegisterController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -10,5 +12,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('/user/register', RegisterController::class);
 
 
