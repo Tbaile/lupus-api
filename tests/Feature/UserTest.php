@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -52,5 +53,23 @@ class UserTest extends TestCase
             ]
         );
         $response->assertInvalid(['email']);
+    }
+
+    /**
+     * Checks user self route.
+     */
+    public function test_self()
+    {
+        $user = User::factory()->create();
+        $this->getJson('/api/user/self')->assertUnauthorized();
+        $response = $this->actingAs($user)->get('/api/user/self');
+        $response->assertJson(function (AssertableJson $json) {
+            return $json->has('data');
+        },
+        function (AssertableJson $json) use ($user) {
+            return $json->where('id', $user->id)
+                ->where('name', $user->name)
+                ->where('email', $user->email);
+        });
     }
 }
