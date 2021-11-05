@@ -1,0 +1,77 @@
+version: '3.4'
+
+services:
+    web:
+        image: tbaile/lupus-web:latest
+        restart: unless-stopped
+        depends_on:
+            - app
+        volumes:
+            - public:/var/www/html/public:ro
+            - storage:/var/www/html/storage
+        environment:
+            APP_DOMAIN: "${APP_DOMAIN}"
+    app:
+        image: tbaile/lupus-app:latest
+        restart: unless-stopped
+        depends_on:
+            - database
+        env_file:
+            - .env
+        volumes:
+            - public:/var/www/html/public
+            - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD", "php-fpm-healthcheck" ]
+            interval: 2s
+            start_period: 10s
+            retries: 5
+    scheduler:
+        image: tbaile/lupus-app:latest
+        restart: unless-stopped
+        depends_on:
+            - app
+        env_file:
+            - .env
+        volumes:
+            - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
+            interval: 2s
+            start_period: 10s
+            retries: 5
+        command: [ "scheduler" ]
+    queue:
+        image: tbaile/lupus-app:latest
+        restart: unless-stopped
+        depends_on:
+            - app
+        env_file:
+            - .env
+        volumes:
+            - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
+            interval: 2s
+            start_period: 10s
+            retries: 5
+        command: [ "queue" ]
+    database:
+        image: postgres:13
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: "${DB_DATABASE}"
+            POSTGRES_USER: "${DB_USERNAME}"
+            POSTGRES_PASSWORD: "${DB_PASSWORD}"
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            interval: 2s
+            start_period: 10s
+            retries: 5
+        volumes:
+            - database:/var/lib/postgresql/data
+
+volumes:
+    storage:
+    public:
+    database:
