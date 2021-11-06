@@ -1,4 +1,4 @@
-FROM nginx:stable as base
+FROM nginx:stable
 WORKDIR /var/www/html
 HEALTHCHECK --interval=2s --start-period=3s CMD curl -f http://localhost/ || exit 1
 RUN apt-get update -qq \
@@ -9,9 +9,7 @@ COPY docker/nginx/start.sh /usr/local/bin/start
 RUN chmod u+x /usr/local/bin/wait-for \
     && chmod u+x /usr/local/bin/start
 COPY docker/nginx/config /etc/nginx
+COPY --chown=www-data:www-data . .
 ENTRYPOINT ["start"]
 CMD ["nginx", "-g", "daemon off;"]
-
-FROM base as production
-COPY --chown=www-data:www-data . .
 

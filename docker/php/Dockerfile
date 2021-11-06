@@ -25,9 +25,19 @@ CMD ["init"]
 
 FROM base as vendor
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-COPY --chown=www-data:www-data . .
+COPY artisan artisan
+COPY bootstrap bootstrap
+COPY storage storage
+COPY composer.json .
+COPY composer.lock .
 RUN composer check-platform-reqs --quiet \
-    && composer i --optimize-autoloader --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
+    && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
+COPY config config
+COPY app app
+COPY routes routes
+COPY database/factories database/factories
+COPY database/seeders database/seeders
+RUN composer run post-autoload-dump --quiet --no-dev --no-ansi --no-plugins
 
 FROM node:lts as node
 WORKDIR /var/www/html
@@ -42,16 +52,15 @@ RUN npx mix --production \
     && rm -rf node_modules
 
 FROM vendor as testing
+RUN composer i --optimize-autoloader --quiet --no-ansi --no-interaction --no-progress --prefer-dist
 COPY --from=node --chown=www-data:www-data /var/www/html/public /var/www/html/public
-RUN cp -r vendor vendor_prod \
-    && composer i --quiet --no-ansi --no-interaction --no-progress --prefer-dist \
-    && php artisan test --parallel
+COPY --chown=www-data:www-data . .
+RUN php artisan test --parallel
 
 FROM testing as production
 RUN rm -rf vendor \
-    && mv vendor_prod vendor \
-    && composer i --optimize-autoloader --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist \
     && rm /usr/local/bin/composer \
     && rm /usr/local/bin/install-php-extensions
+COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 
 
