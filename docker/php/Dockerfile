@@ -62,5 +62,6 @@ RUN rm -rf vendor \
     && rm /usr/local/bin/composer \
     && rm /usr/local/bin/install-php-extensions
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
+COPY --from=vendor /var/www/html/bootstrap/cache /var/www/html/bootstrap/cache
 
 
