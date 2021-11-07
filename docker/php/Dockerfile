@@ -44,9 +44,9 @@ WORKDIR /var/www/html
 COPY package.json .
 COPY package-lock.json .
 RUN npm ci
-COPY resources ./resources
 COPY webpack.mix.js .
 COPY tailwind.config.js .
+COPY resources ./resources
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN npx mix --production \
     && rm -rf node_modules
