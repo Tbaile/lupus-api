@@ -19,7 +19,6 @@ class CreateRoomsTable extends Migration
             $table->string('name');
             $table->boolean('private');
             $table->string('password')->nullable();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

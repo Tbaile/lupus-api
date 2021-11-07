@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RoomFactory extends Factory
@@ -15,8 +14,7 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->realTextBetween(),
-            'user_id' => User::factory()
+            'name' => $this->faker->realTextBetween()
         ];
     }
 

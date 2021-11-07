@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoomRoleEnum;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Room;
-use Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -36,8 +36,8 @@ class RoomController extends Controller
     public function store(StoreRoomRequest $request): JsonResponse
     {
         $room = Room::make($request->validated());
-        $room->user()->associate(Auth::user());
         $room->save();
+        $room->users()->attach($request->user(), ['role' => RoomRoleEnum::OWNER()]);
         return (new RoomResource($room))->response();
     }
 

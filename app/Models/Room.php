@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\RoomRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Room extends Model
 {
@@ -20,8 +21,18 @@ class Room extends Model
         'password'
     ];
 
-    public function user(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Retrieve the owner of the game.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function owner(): BelongsToMany
+    {
+        return $this->users()->wherePivot('role', RoomRoleEnum::OWNER());
     }
 }
