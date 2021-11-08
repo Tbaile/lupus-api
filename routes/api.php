@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Room\InviteController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 
@@ -20,5 +21,6 @@ Route::get('/user/self', [UserController::class, 'self']);
 Route::post('/user/register', RegisterController::class);
 Route::post('/user/login', LoginController::class);
 
+Route::post('/room/{room}/invite', InviteController::class);
 Route::apiResource('/room', RoomController::class);
 

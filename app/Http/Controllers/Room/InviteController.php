@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Room;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoomInviteRequest;
+use App\Http\Resources\UserResource;
 use App\Models\Room;
+use Illuminate\Http\JsonResponse;
 
 class InviteController extends Controller
 {
@@ -18,12 +20,16 @@ class InviteController extends Controller
      *
      * @param  \App\Http\Requests\StoreRoomInviteRequest  $request
      * @param  \App\Models\Room  $room
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(StoreRoomInviteRequest $request, Room $room)
+    public function __invoke(StoreRoomInviteRequest $request, Room $room): JsonResponse
     {
-        foreach ($request->validated()['users'] as $id) {
-            $room->players()->attach($id);
+        $invites = $request->collect('users');
+        foreach ($invites as $invite) {
+            $room->users()->attach($invite['id'], ['role' => $invite['role']]);
         }
+        return UserResource::collection($room->users()
+            ->withPivot('role')->whereIn('user_id', $invites->pluck('id'))
+            ->get())->response();
     }
 }
