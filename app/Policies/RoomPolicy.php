@@ -53,7 +53,7 @@ class RoomPolicy
      */
     public function invite(User $user, Room $room): bool
     {
-        return $room->users->contains($user);
+        return $this->update($user, $room);
     }
 
     /**

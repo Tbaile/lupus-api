@@ -26,7 +26,7 @@ class RoomTest extends TestCase
         $response = $this->postJson('/api/room', [
             'name' => $room->name
         ]);
-        $response->assertForbidden();
+        $response->assertUnauthorized();
         $response = $this->actingAs($user)
             ->postJson('/api/room', [
                 'name' => $room->name
@@ -76,7 +76,7 @@ class RoomTest extends TestCase
         $this->faker->addProvider(new FakerEnumProvider($this->faker));
         $room = Room::factory()->create();
         $this->postJson('/api/room/'.$room->id.'/invite')
-            ->assertForbidden();
+            ->assertUnauthorized();
         $this->actingAs($room->owner()->first())
             ->postJson('/api/room/'.$room->id.'/invite')
             ->assertInvalid(['users']);
