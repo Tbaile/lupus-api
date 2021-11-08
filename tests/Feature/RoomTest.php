@@ -51,12 +51,16 @@ class RoomTest extends TestCase
                 'password' => $room->password
             ]);
         $response->assertCreated()
-            ->assertJson(function (AssertableJson $json) {
-                return $json->has('data');
-            }, function (AssertableJson $json) use ($user, $room) {
-                $json->where('name', $room->name)
-                    ->where('private', $room->private)
-                    ->where('password', $room->password);
+            ->assertJson(function (AssertableJson $json) use ($room, $user) {
+                return $json->has('data', function (AssertableJson $json) use ($user, $room) {
+                    $json->has('id')
+                        ->where('name', $room->name)
+                        ->where('private', $room->private)
+                        ->where('password', $room->password)
+                        ->has('owner.id')
+                        ->where('owner.name', $user->name)
+                        ->where('owner.email', $user->email);
+                });
             });
     }
 }

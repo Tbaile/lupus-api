@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoomRoleEnum;
 use App\Models\Room;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -44,6 +45,18 @@ class RoomPolicy
     }
 
     /**
+     * Check if a user is able to invite into a room.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Room  $room
+     * @return bool
+     */
+    public function invite(User $user, Room $room): bool
+    {
+        return $room->users->contains($user);
+    }
+
+    /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
@@ -52,7 +65,8 @@ class RoomPolicy
      */
     public function update(User $user, Room $room)
     {
-        //
+        return $room->users()->wherePivotIn('role', [RoomRoleEnum::OWNER(), RoomRoleEnum::MANAGER()])->get()
+            ->contains($user);
     }
 
     /**
