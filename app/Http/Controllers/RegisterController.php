@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRegistration;
 use App\Models\User;
+use Hash;
 use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
@@ -16,7 +17,9 @@ class RegisterController extends Controller
      */
     public function __invoke(UserRegistration $request): JsonResponse
     {
-        $user = User::create($request->validated());
+        $user = User::make($request->only('name', 'email'));
+        $user->password = Hash::make($request->get('password'));
+        $user->save();
         return response()->json(
             [
                 'token' => $user->createToken(now()->toISOString())->plainTextToken
