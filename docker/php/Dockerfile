@@ -19,25 +19,21 @@ RUN chmod u+x /usr/local/bin/php-fpm-healthcheck \
     && chmod u+x /usr/local/bin/init \
     && chmod u+x /usr/local/bin/scheduler \
     && chmod u+x /usr/local/bin/queue
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 # Change entrypoint, using tini because some processes doesn't handle well SIGTERM signals
 ENTRYPOINT ["tini", "--"]
 CMD ["init"]
 
 FROM base as vendor
-COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY artisan artisan
 COPY bootstrap bootstrap
 COPY storage storage
 COPY composer.json .
 COPY composer.lock .
 RUN composer check-platform-reqs --quiet \
+    && composer i --optimize-autoloader --no-scripts --quiet --no-ansi --no-interaction --no-progress --prefer-dist \
+    && mv vendor vendor_test \
     && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
-COPY config config
-COPY app app
-COPY routes routes
-COPY database/factories database/factories
-COPY database/seeders database/seeders
-RUN composer run post-autoload-dump --quiet --no-dev --no-ansi --no-plugins
 
 FROM node:lts as node
 WORKDIR /var/www/html
@@ -51,17 +47,18 @@ COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN npx mix --production \
     && rm -rf node_modules
 
-FROM vendor as testing
-RUN composer i --optimize-autoloader --quiet --no-ansi --no-interaction --no-progress --prefer-dist
-COPY --from=node --chown=www-data:www-data /var/www/html/public /var/www/html/public
+FROM base as testing
 COPY --chown=www-data:www-data . .
-RUN php artisan test --parallel
+COPY --from=node --chown=www-data:www-data /var/www/html/public /var/www/html/public
+COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
+RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
+    && php artisan test --parallel
 
 FROM testing as production
-RUN rm -rf vendor \
+RUN rm -rf vendor
+COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
+RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
     && rm /usr/local/bin/composer \
     && rm /usr/local/bin/install-php-extensions
-COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
-COPY --from=vendor /var/www/html/bootstrap/cache /var/www/html/bootstrap/cache
 
 
