@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/LupusWebNew.iml" filepath="$PROJECT_DIR$/.idea/LupusWebNew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/LupusWeb.iml" filepath="$PROJECT_DIR$/.idea/LupusWeb.iml" />
     </modules>
   </component>
 </project>
