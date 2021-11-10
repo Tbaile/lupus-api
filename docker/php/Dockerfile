@@ -2,12 +2,12 @@ FROM php:8-fpm as base
 WORKDIR /var/www/html/
 # Copying extension installer then install every dependency needed for the image to work
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN set -xe && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
+RUN install-php-extensions zip pdo_pgsql pgsql \
     && apt-get update -qq \
     && apt-get install -yqq fcgiwrap tini netcat procps \
     && rm -rf /var/lib/apt/lists/* \
-    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
-    && install-php-extensions zip pdo_pgsql pgsql
+    && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
+    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Copying needed binaries
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
 ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.3/wait-for /usr/local/bin/
