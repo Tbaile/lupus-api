@@ -23,6 +23,8 @@
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
+        "nunomaduro/larastan": "^1.0",
+        "phpstan/phpstan": "^1.1",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
@@ -38,6 +40,7 @@
         }
     },
     "scripts": {
+        "phpstan": "vendor/bin/phpstan analyze -c phpstan.neon.dist",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
