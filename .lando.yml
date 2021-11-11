@@ -8,6 +8,8 @@ config:
   xdebug: true
   password: postgres
 services:
+  database:
+    portforward: 6543
   node:
     type: node:14
     globals:
