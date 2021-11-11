@@ -22,7 +22,7 @@ class RoomResource extends JsonResource
             'name' => $this->name,
             'private' => $this->private,
             'password' => $this->when($request->user()->can('update', $this->resource), $this->password),
-            'owner' => new UserResource($this->owner()->firstOrFail())
+            'owner' => new UserResource($this->owner())
         ];
     }
 }

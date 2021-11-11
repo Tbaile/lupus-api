@@ -21,18 +21,24 @@ class Room extends Model
         'password'
     ];
 
+    /**
+     * Retrieve every user that is a participant of the room.
+     * This also fetches the role of the user as pivot.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot(['role']);
     }
 
     /**
      * Retrieve the owner of the game.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \App\Models\User
      */
-    public function owner(): BelongsToMany
+    public function owner(): User
     {
-        return $this->users()->wherePivot('role', RoomRoleEnum::OWNER());
+        return $this->users()->wherePivot('role', RoomRoleEnum::OWNER())->first();
     }
 }
