@@ -6,6 +6,7 @@ use App\Enums\RoomRoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Room extends Model
 {
@@ -40,5 +41,15 @@ class Room extends Model
     public function owner(): User
     {
         return $this->users()->wherePivot('role', RoomRoleEnum::OWNER())->first();
+    }
+
+    /**
+     * Retrieve the game that are created by this room.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class);
     }
 }
