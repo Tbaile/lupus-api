@@ -21,11 +21,6 @@ services:
         volumes:
             - public:/var/www/html/public
             - storage:/var/www/html/storage
-        healthcheck:
-            test: [ "CMD", "php-fpm-healthcheck" ]
-            interval: 2s
-            start_period: 10s
-            retries: 5
     scheduler:
         image: tbaile/lupus-app:latest
         restart: unless-stopped
@@ -35,11 +30,6 @@ services:
             - .env
         volumes:
             - storage:/var/www/html/storage
-        healthcheck:
-            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
-            interval: 2s
-            start_period: 10s
-            retries: 5
         command: [ "scheduler" ]
     queue:
         image: tbaile/lupus-app:latest
@@ -50,11 +40,6 @@ services:
             - .env
         volumes:
             - storage:/var/www/html/storage
-        healthcheck:
-            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
-            interval: 2s
-            start_period: 10s
-            retries: 5
         command: [ "queue" ]
     database:
         image: postgres:13
@@ -63,11 +48,6 @@ services:
             POSTGRES_DB: "${DB_DATABASE}"
             POSTGRES_USER: "${DB_USERNAME}"
             POSTGRES_PASSWORD: "${DB_PASSWORD}"
-        healthcheck:
-            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-            interval: 2s
-            start_period: 10s
-            retries: 5
         volumes:
             - database:/var/lib/postgresql/data
 
