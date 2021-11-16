@@ -1,14 +1,11 @@
-FROM php:8-fpm as base
+FROM php:8-fpm-alpine as base
 WORKDIR /var/www/html/
 # Copying extension installer then install every dependency needed for the image to work
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions zip pdo_pgsql pgsql \
-    && apt-get update -qq \
-    && apt-get install -yqq fcgiwrap tini netcat procps \
-    && rm -rf /var/lib/apt/lists/* \
+    && apk add --no-cache fcgiwrap tini netcat-openbsd procps \
     && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-# Copying needed binaries
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
 ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.3/wait-for /usr/local/bin/
 COPY docker/php/init.sh /usr/local/bin/init
@@ -35,7 +32,7 @@ RUN composer check-platform-reqs --quiet \
     && mv vendor vendor_test \
     && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
 
-FROM node:lts as node
+FROM node:lts-alpine as node
 WORKDIR /var/www/html
 COPY package.json .
 COPY package-lock.json .
@@ -60,5 +57,3 @@ COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
     && rm /usr/local/bin/composer \
     && rm /usr/local/bin/install-php-extensions
-
-
