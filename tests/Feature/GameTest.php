@@ -27,7 +27,7 @@ class GameTest extends TestCase
         $response->assertOk()
             ->assertJson(
                 function (AssertableJson $json) use ($game) {
-                    return $json->has('data', 2, function (AssertableJson $json) use ($json, $game) {
+                    return $json->has('data', 2, function (AssertableJson $json) use ($game) {
                         return $json->where('id', $game->id)->has('created_at')->has('updated_at');
                     })->etc();
                 }
