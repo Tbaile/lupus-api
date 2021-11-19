@@ -24,5 +24,5 @@ Route::post('/user/login', LoginController::class);
 
 Route::post('/room/{room}/invite', InviteController::class);
 Route::apiResource('room', RoomController::class)->only(['store']);
-Route::apiResource('room.game', GameController::class);
+Route::apiResource('room.game', GameController::class)->only(['index', 'store']);
 
