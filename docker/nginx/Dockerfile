@@ -8,4 +8,3 @@ COPY docker/nginx/config /etc/nginx
 COPY . .
 ENTRYPOINT ["start"]
 CMD ["nginx", "-g", "daemon off;"]
-
