@@ -11,6 +11,9 @@ services:
             - storage:/var/www/html/storage
         environment:
             APP_DOMAIN: "${APP_DOMAIN}"
+        healthcheck:
+            test: ["CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost"]
+            start_period: 10s
     app:
         image: tbaile/lupus-app:latest
         restart: unless-stopped
@@ -21,6 +24,9 @@ services:
         volumes:
             - public:/var/www/html/public
             - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD", "php-fpm-healthcheck" ]
+            start_period: 10s
     scheduler:
         image: tbaile/lupus-app:latest
         restart: unless-stopped
@@ -30,6 +36,9 @@ services:
             - .env
         volumes:
             - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
+            start_period: 10s
         command: [ "scheduler" ]
     queue:
         image: tbaile/lupus-app:latest
@@ -40,6 +49,9 @@ services:
             - .env
         volumes:
             - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
+            start_period: 10s
         command: [ "queue" ]
     database:
         image: postgres:13
@@ -50,6 +62,9 @@ services:
             POSTGRES_PASSWORD: "${DB_PASSWORD}"
         volumes:
             - database:/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            start_period: 10s
 
 volumes:
     storage:
