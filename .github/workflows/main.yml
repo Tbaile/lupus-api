@@ -47,10 +47,10 @@ jobs:
         with:
           context: .
           file: docker/php/Dockerfile
-          platforms: linux/arm-64
+          platforms: linux/arm64
           load: true
           target: testing
-          cache-from: type=registry,ref=tbaile/lupus-app:buildcache-arm-64
+          cache-from: type=registry,ref=tbaile/lupus-app:buildcache-arm64
       - name: Build and push ARM64 app container
         uses: docker/build-push-action@v2
         with:
