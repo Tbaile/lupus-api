@@ -8,13 +8,8 @@ bootstrap/cache/
 # database
 database/*.sqlite*
 # docker
-docker/*
-!docker/nginx/config/
-!docker/nginx/start.sh
-!docker/php/conf.d/
-!docker/php/init.sh
-!docker/php/scheduler.sh
-!docker/php/queue.sh
+docker/nginx/Dockerfile
+docker/php/Dockerfile
 # node
 node_modules/
 # public
@@ -58,11 +53,6 @@ storage/framework/views/*
 ## logs
 storage/logs/*
 !storage/logs/.gitignore
-# tests
-tests/Browser/console/*
-!tests/Browser/console/.gitignore
-tests/Browser/screenshots/*
-!tests/Browser/screenshots/.gitignore
 # composer
 vendor/
 # env file and dev files
