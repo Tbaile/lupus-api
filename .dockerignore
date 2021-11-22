@@ -11,6 +11,7 @@ database/*.sqlite*
 docker/*
 !docker/nginx/config/
 !docker/nginx/start.sh
+!docker/php/conf.d/
 !docker/php/init.sh
 !docker/php/scheduler.sh
 !docker/php/queue.sh
