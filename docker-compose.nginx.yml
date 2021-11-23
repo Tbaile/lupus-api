@@ -1,0 +1,62 @@
+version: '3.4'
+
+services:
+    app:
+        image: tbaile/lupus-app:nginx
+        build:
+          context: .
+          dockerfile: docker/nginx-php/Dockerfile
+        restart: unless-stopped
+        depends_on:
+            - database
+        env_file:
+            - .env
+        volumes:
+            - storage:/var/www/html/storage
+        ports:
+          - "80:80"
+        healthcheck:
+            test: [ "CMD", "php-fpm-healthcheck" ]
+            start_period: 10s
+    scheduler:
+        image: tbaile/lupus-app:nginx
+        restart: unless-stopped
+        depends_on:
+            - app
+        env_file:
+            - .env
+        volumes:
+            - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
+            start_period: 10s
+        command: [ "scheduler" ]
+    queue:
+        image: tbaile/lupus-app:nginx
+        restart: unless-stopped
+        depends_on:
+            - app
+        env_file:
+            - .env
+        volumes:
+            - storage:/var/www/html/storage
+        healthcheck:
+            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
+            start_period: 10s
+        command: [ "queue" ]
+    database:
+        image: postgres:13
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: "${DB_DATABASE}"
+            POSTGRES_USER: "${DB_USERNAME}"
+            POSTGRES_PASSWORD: "${DB_PASSWORD}"
+        volumes:
+            - database:/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            start_period: 10s
+
+volumes:
+    storage:
+    database:
