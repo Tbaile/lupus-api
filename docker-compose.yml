@@ -31,7 +31,7 @@ services:
         image: tbaile/lupus-app:latest
         restart: unless-stopped
         depends_on:
-            - app
+            - database
         env_file:
             - .env
         volumes:
@@ -44,7 +44,7 @@ services:
         image: tbaile/lupus-app:latest
         restart: unless-stopped
         depends_on:
-            - app
+            - database
         env_file:
             - .env
         volumes:
