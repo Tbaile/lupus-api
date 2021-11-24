@@ -6,6 +6,10 @@ services:
         restart: unless-stopped
         depends_on:
             - app
+        logging:
+            options:
+                max-size: "500k"
+                max-file: "10"
         volumes:
             - public:/var/www/html/public:ro
             - storage:/var/www/html/storage
@@ -21,6 +25,10 @@ services:
             - database
         env_file:
             - .env
+        logging:
+            options:
+                max-size: "500k"
+                max-file: "10"
         volumes:
             - public:/var/www/html/public
             - storage:/var/www/html/storage
@@ -34,6 +42,10 @@ services:
             - database
         env_file:
             - .env
+        logging:
+            options:
+                max-size: "500k"
+                max-file: "10"
         volumes:
             - storage:/var/www/html/storage
         healthcheck:
@@ -47,6 +59,10 @@ services:
             - database
         env_file:
             - .env
+        logging:
+            options:
+                max-size: "500k"
+                max-file: "10"
         volumes:
             - storage:/var/www/html/storage
         healthcheck:
