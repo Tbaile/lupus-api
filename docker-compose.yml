@@ -30,7 +30,7 @@ services:
                 max-size: "500k"
                 max-file: "10"
         volumes:
-            - public:/var/www/html/public
+            - public:/app/public
             - storage:/var/www/html/storage
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]

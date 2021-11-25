@@ -5,6 +5,8 @@ echo "Setting up Laravel Framework"
 php artisan config:cache
 php artisan view:cache
 php artisan storage:link
+echo "Clone the public folder data to the mounted volume"
+cp -r public /app
 echo "Wait for database to come up..."
 wait-for -t 30 "${DB_HOST}:${DB_PORT}"
 if [ "${APP_ENV:-production}" == "production" ]; then
