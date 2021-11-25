@@ -18,6 +18,11 @@ mix.setPublicPath('public')
         require('tailwindcss')
     ]);
 
+mix.browserSync({
+    open: false,
+    proxy: 'lupusweb.lndo.site'
+})
+
 if (mix.inProduction()) {
     mix.version()
 }
