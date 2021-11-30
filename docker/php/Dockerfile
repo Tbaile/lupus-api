@@ -1,7 +1,11 @@
 FROM php:8-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
-RUN install-php-extensions zip pdo_pgsql pgsql opcache
+COPY --from=mlocati/php-extension-installer:1 /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions \
+    mysqli \
+    opcache \
+    pdo_mysql \
+    zip
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
@@ -32,7 +36,10 @@ RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
     && php artisan test --parallel
 
 FROM base as production
-RUN apk add --no-cache fcgiwrap tini netcat-openbsd procps \
+RUN apk add --no-cache fcgiwrap \
+    netcat-openbsd \
+    procps \
+    tini \
     && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY docker/php/conf.d /usr/local/etc/php/conf.d
