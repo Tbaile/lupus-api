@@ -4,12 +4,12 @@ config:
   php: '8.0'
   webroot: public
   via: nginx
-  database: postgres:13
+  database: mariadb
   xdebug: true
   password: postgres
 services:
   database:
-    portforward: 6543
+    portforward: 3307
   node:
     type: node:14
     globals:
