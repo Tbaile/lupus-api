@@ -44,7 +44,7 @@ RUN apk add --no-cache fcgiwrap \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY docker/php/conf.d /usr/local/etc/php/conf.d
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
-ADD https://raw.githubusercontent.com/eficode/wait-for/v2.2.0/wait-for /usr/local/bin/
+ADD https://github.com/eficode/wait-for/releases/download/v2.2.1/wait-for /usr/local/bin/
 COPY docker/php/init.sh /usr/local/bin/init
 COPY docker/php/scheduler.sh /usr/local/bin/scheduler
 COPY docker/php/queue.sh /usr/local/bin/queue

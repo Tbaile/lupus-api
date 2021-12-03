@@ -54,7 +54,7 @@ services:
             start_period: 10s
         command: [ "queue" ]
     database:
-        image: mariadb:10
+        image: mariadb:10.6
         restart: unless-stopped
         environment:
             MARIADB_RANDOM_ROOT_PASSWORD: "true"
