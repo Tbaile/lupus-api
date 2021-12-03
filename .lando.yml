@@ -4,7 +4,7 @@ config:
   php: '8.0'
   webroot: public
   via: nginx
-  database: mariadb
+  database: mariadb:10.6
   xdebug: true
   password: postgres
 services:
