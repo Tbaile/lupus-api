@@ -64,7 +64,7 @@ services:
         volumes:
             - database:/var/lib/mysql
         healthcheck:
-            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            test: [ "CMD-SHELL", "mysqladmin --user=$DB_USERNAME --password=$DB_PASSWORD ping --silent" ]
             start_period: 10s
 
 volumes:
