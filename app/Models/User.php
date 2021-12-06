@@ -51,4 +51,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Game::class);
     }
+
+    /**
+     * Return all the rooms that are associated in any way to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function rooms(): BelongsToMany
+    {
+        return $this->belongsToMany(Room::class)->withPivot(['role']);
+    }
 }

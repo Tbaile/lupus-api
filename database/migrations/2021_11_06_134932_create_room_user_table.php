@@ -16,7 +16,6 @@ class CreateRoomUserTable extends Migration
     public function up()
     {
         Schema::create('room_user', function (Blueprint $table) {
-            $table->id();
             $table->foreignIdFor(Room::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('role');

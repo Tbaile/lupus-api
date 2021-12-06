@@ -16,10 +16,10 @@ class CreateGameUserTable extends Migration
     public function up()
     {
         Schema::create('game_user', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Game::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('charater')->nullable();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->boolean('death')->default(false);
+            $table->string('character')->nullable();
             $table->unique(['user_id', 'game_id']);
             $table->timestamps();
         });
