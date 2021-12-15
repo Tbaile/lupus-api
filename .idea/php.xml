@@ -129,37 +129,43 @@
       <path value="$PROJECT_DIR$/vendor/mockery/mockery" />
       <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
       <path value="$PROJECT_DIR$/vendor/nunomaduro/larastan" />
+      <path value="$PROJECT_DIR$/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/vendor/pestphp/pest-plugin" />
+      <path value="$PROJECT_DIR$/vendor/pestphp/pest" />
+      <path value="$PROJECT_DIR$/vendor/pestphp/pest-plugin-laravel" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
     <interpreters>
-      <interpreter id="1de2457d-8e67-43f5-af22-ee0d3ec25f0a" name="devwithlando/php:8.0-fpm-3" home="docker://DATA" debugger_id="php.debugger.XDebug" debugger_extension="xdebug">
-        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_IMAGE_NAME="devwithlando/php:8.0-fpm-3" DOCKER_REMOTE_PROJECT_PATH="/opt/project" />
+      <interpreter id="1de2457d-8e67-43f5-af22-ee0d3ec25f0a" name="devwithlando/php:8.0" home="docker://DATA" debugger_id="php.debugger.XDebug" debugger_extension="xdebug">
+        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_IMAGE_NAME="devwithlando/php:8.0-fpm-4" DOCKER_REMOTE_PROJECT_PATH="/opt/project" />
       </interpreter>
     </interpreters>
   </component>
   <component name="PhpInterpretersPhpInfoCache">
     <phpInfoCache>
-      <interpreter name="devwithlando/php:8.0-fpm-3">
+      <interpreter name="devwithlando/php:8.0">
         <phpinfo binary_type="PHP" php_cli="/usr/local/bin/php" path_separator=":" version="8.0.13">
-          <additional_php_ini>/usr/local/etc/php/conf.d/docker-php-ext-bcmath.ini, /usr/local/etc/php/conf.d/docker-php-ext-bz2.ini, /usr/local/etc/php/conf.d/docker-php-ext-calendar.ini, /usr/local/etc/php/conf.d/docker-php-ext-exif.ini, /usr/local/etc/php/conf.d/docker-php-ext-gd.ini, /usr/local/etc/php/conf.d/docker-php-ext-gettext.ini, /usr/local/etc/php/conf.d/docker-php-ext-imap.ini, /usr/local/etc/php/conf.d/docker-php-ext-intl.ini, /usr/local/etc/php/conf.d/docker-php-ext-ldap.ini, /usr/local/etc/php/conf.d/docker-php-ext-mysqli.ini, /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini, /usr/local/etc/php/conf.d/docker-php-ext-pcntl.ini, /usr/local/etc/php/conf.d/docker-php-ext-pdo_mysql.ini, /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini, /usr/local/etc/php/conf.d/docker-php-ext-redis.ini, /usr/local/etc/php/conf.d/docker-php-ext-soap.ini, /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini, /usr/local/etc/php/conf.d/docker-php-ext-zip.ini</additional_php_ini>
+          <additional_php_ini>/usr/local/etc/php/conf.d/docker-php-ext-apcu.ini, /usr/local/etc/php/conf.d/docker-php-ext-bcmath.ini, /usr/local/etc/php/conf.d/docker-php-ext-bz2.ini, /usr/local/etc/php/conf.d/docker-php-ext-calendar.ini, /usr/local/etc/php/conf.d/docker-php-ext-exif.ini, /usr/local/etc/php/conf.d/docker-php-ext-gd.ini, /usr/local/etc/php/conf.d/docker-php-ext-gettext.ini, /usr/local/etc/php/conf.d/docker-php-ext-imagick.ini, /usr/local/etc/php/conf.d/docker-php-ext-imap.ini, /usr/local/etc/php/conf.d/docker-php-ext-intl.ini, /usr/local/etc/php/conf.d/docker-php-ext-ldap.ini, /usr/local/etc/php/conf.d/docker-php-ext-memcached.ini, /usr/local/etc/php/conf.d/docker-php-ext-mysqli.ini, /usr/local/etc/php/conf.d/docker-php-ext-oauth.ini, /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini, /usr/local/etc/php/conf.d/docker-php-ext-pcntl.ini, /usr/local/etc/php/conf.d/docker-php-ext-pdo_mysql.ini, /usr/local/etc/php/conf.d/docker-php-ext-pdo_pgsql.ini, /usr/local/etc/php/conf.d/docker-php-ext-redis.ini, /usr/local/etc/php/conf.d/docker-php-ext-soap.ini, /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini, /usr/local/etc/php/conf.d/docker-php-ext-zip.ini</additional_php_ini>
           <configuration_file />
           <configuration_options>
             <configuration_option name="include_path" value=".:/usr/local/lib/php" />
           </configuration_options>
           <debuggers>
-            <debugger_info debugger="xdebug" debugger_version="3.1.1">
+            <debugger_info debugger="xdebug" debugger_version="3.1.2">
               <debug_extensions />
             </debugger_info>
           </debuggers>
           <loaded_extensions>
             <extension name="Core" />
+            <extension name="OAuth" />
             <extension name="PDO" />
             <extension name="Phar" />
             <extension name="Reflection" />
             <extension name="SPL" />
             <extension name="SimpleXML" />
             <extension name="Zend OPcache" />
+            <extension name="apcu" />
             <extension name="bcmath" />
             <extension name="bz2" />
             <extension name="calendar" />
@@ -175,12 +181,14 @@
             <extension name="gettext" />
             <extension name="hash" />
             <extension name="iconv" />
+            <extension name="imagick" />
             <extension name="imap" />
             <extension name="intl" />
             <extension name="json" />
             <extension name="ldap" />
             <extension name="libxml" />
             <extension name="mbstring" />
+            <extension name="memcached" />
             <extension name="mysqli" />
             <extension name="mysqlnd" />
             <extension name="openssl" />
