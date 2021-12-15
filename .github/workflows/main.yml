@@ -22,23 +22,15 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             type=ref,event=branch
-      - name: Test images
+      - name: Build and push app images
         uses: docker/build-push-action@v2
         with:
           context: .
           file: docker/php/Dockerfile
           platforms: linux/amd64,linux/arm64
-          target: testing
-          cache-from: type=registry,ref=tbaile/lupus-app:buildcache
-      - name: Production images
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: docker/php/Dockerfile
-          platforms: linux/amd64,linux/arm64
-          target: production
           tags: ${{ steps.meta-app.outputs.tags }}
           push: true
+          cache-from: type=registry,ref=tbaile/lupus-app:buildcache
           cache-to: type=registry,ref=tbaile/lupus-app:buildcache,mode=max
       - uses: docker/metadata-action@v3
         id: meta-web
@@ -49,7 +41,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             type=ref,event=branch
-      - name: Build and push web image
+      - name: Build and push web images
         uses: docker/build-push-action@v2
         with:
           context: .

@@ -54,6 +54,7 @@ RUN chmod u+x /usr/local/bin/php-fpm-healthcheck \
     && chmod u+x /usr/local/bin/scheduler \
     && chmod u+x /usr/local/bin/queue
 COPY --chown=www-data:www-data . .
+COPY --from=testing /var/www/html/artisan /var/www/html/artisan
 COPY --from=node --chown=www-data:www-data /var/www/html/public /var/www/html/public
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
