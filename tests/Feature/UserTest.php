@@ -1,75 +1,57 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Tests\TestCase;
 
-class UserTest extends TestCase
-{
-    use RefreshDatabase;
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
 
-    /**
-     * Test user registration.
-     *
-     * @return void
-     */
-    public function test_register()
-    {
-        $user = User::factory()->make();
-        $response = $this->postJson('/api/user/register', $user->only(['name', 'email', 'password']));
-        $response->assertOk();
-        $this->assertDatabaseHas('users', [
-            'name' => $user->name,
-            'email' => $user->email
-        ]);
-        $this->assertDatabaseCount('personal_access_tokens', 1);
-        $response = $this->postJson('/api/user/register');
-        $response->assertInvalid(['name', 'email']);
-    }
+uses(RefreshDatabase::class)->group('user');
 
-    /**
-     * Test user login.
-     *
-     * @return void
-     */
-    public function test_login()
-    {
-        $user = User::factory()->create();
-        $response = $this->postJson('/api/user/login',
-            [
-                'email' => $user->email,
-                'password' => 'password'
-            ]
-        );
-        $response->assertOk();
-        $this->assertDatabaseCount('personal_access_tokens', 1);
-        $response = $this->postJson('/api/user/login',
-            [
-                'email' => $user->email,
-                'password' => 'passwor'
-            ]
-        );
-        $response->assertInvalid(['email']);
-    }
+beforeEach(fn() => $this->user = User::factory()->create());
 
-    /**
-     * Checks user self route.
-     */
-    public function test_self()
-    {
-        $user = User::factory()->create();
-        $this->getJson('/api/user/self')->assertUnauthorized();
-        $response = $this->actingAs($user)->get('/api/user/self');
-        $response->assertJson(function (AssertableJson $json) {
-            return $json->has('data');
-        },
-        function (AssertableJson $json) use ($user) {
-            return $json->where('id', $user->id)
-                ->where('name', $user->name)
-                ->where('email', $user->email);
-        });
-    }
-}
+it('can register', function () {
+    /** @var User $user */
+    $user = User::factory()->make();
+    postJson('/api/user/register', $user->only(['name', 'email', 'password']))
+        ->assertOk()
+        ->assertJson(fn(AssertableJson $json) => $json->has('data.token'));
+    assertDatabaseHas('users', [
+        'name' => $user->name,
+        'email' => $user->email
+    ]);
+    assertDatabaseCount('personal_access_tokens', 1);
+    postJson('/api/user/register')->assertInvalid(['name', 'email']);
+});
+
+it('can login ', function () {
+    postJson('/api/user/login',
+        [
+            'email' => $this->user->email,
+            'password' => 'password'
+        ]
+    )->assertOk()
+        ->assertJson(fn(AssertableJson $json) => $json->has('data.token'));
+    assertDatabaseCount('personal_access_tokens', 1);
+    postJson('/api/user/login',
+        [
+            'email' => $this->user->email,
+            'password' => 'passwor'
+        ]
+    )->assertInvalid(['email']);
+});
+
+it('can get self user', function () {
+    getJson('/api/user/self')
+        ->assertUnauthorized();
+    actingAs($this->user)->get('/api/user/self')
+        ->assertOk()
+        ->assertJsonCount(3, 'data')
+        ->assertJsonPath('data.id', $this->user->id)
+        ->assertJsonPath('data.name', $this->user->name)
+        ->assertJsonPath('data.email', $this->user->email);
+});

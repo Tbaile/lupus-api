@@ -22,7 +22,9 @@ class RegisterController extends Controller
         $user->save();
         return response()->json(
             [
-                'token' => $user->createToken(now()->toISOString())->plainTextToken
+                'data' => [
+                    'token' => $user->createToken(now()->toISOString())->plainTextToken
+                ]
             ]
         );
     }
