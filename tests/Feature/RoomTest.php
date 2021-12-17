@@ -144,3 +144,21 @@ test('invite users', function (int $userNumber) {
                 ->whereContains('data', $expected->toArray())
         );
 })->with([5, 10, 15]);
+
+test('user can\'t invite people already in the room', function ($role) {
+    /** @var Room $room */
+    $room = Room::factory()->create();
+    actingAs($room->owner())
+        ->postJson('/api/room/'.$room->id.'/invite', [
+            'users' => [
+                [
+                    'id' => $room->owner()->id,
+                    'role' => $role
+                ]
+            ]
+        ])->assertInvalid(['users.0.id']);
+})->with([
+    RoomRoleEnum::OWNER(),
+    RoomRoleEnum::MANAGER(),
+    RoomRoleEnum::PLAYER()
+]);

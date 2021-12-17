@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Enums\RoomRoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StoreRoomInviteRequest extends FormRequest
 {
@@ -20,13 +22,23 @@ class StoreRoomInviteRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function rules(): array
+    public function rules(Request $request): array
     {
+        /** @var \App\Models\Room $room */
+        $room = $request->route('room');
+        if ($room == null) {
+            abort(422);
+        }
         return [
             'users' => 'required|array|min:1',
-            'users.*.id' => 'required|exists:App\Models\User,id',
+            'users.*.id' => [
+                'required',
+                'exists:App\Models\User,id',
+                Rule::notIn($room->users()->pluck('id')->toArray())
+            ],
             'users.*.role' => 'required|enum:'.RoomRoleEnum::class
         ];
     }
