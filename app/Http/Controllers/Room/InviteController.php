@@ -30,6 +30,6 @@ class InviteController extends Controller
         }
         return UserResource::collection($room->users()
             ->withPivot('role')->whereIn('user_id', $invites->pluck('id'))
-            ->get())->response();
+            ->get())->response()->setStatusCode(201);
     }
 }

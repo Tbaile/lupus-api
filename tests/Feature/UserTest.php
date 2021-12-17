@@ -50,8 +50,9 @@ it('can get self user', function () {
         ->assertUnauthorized();
     actingAs($this->user)->get('/api/user/self')
         ->assertOk()
-        ->assertJsonCount(3, 'data')
-        ->assertJsonPath('data.id', $this->user->id)
-        ->assertJsonPath('data.name', $this->user->name)
-        ->assertJsonPath('data.email', $this->user->email);
+        ->assertJson(fn(AssertableJson $json) => $json->has('data',
+            fn(AssertableJson $json) => $json->where('id', $this->user->id)
+                ->where('name', $this->user->name)
+                ->where('email', $this->user->email)
+        ));
 });

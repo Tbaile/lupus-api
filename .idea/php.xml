@@ -134,6 +134,7 @@
       <path value="$PROJECT_DIR$/vendor/pestphp/pest" />
       <path value="$PROJECT_DIR$/vendor/pestphp/pest-plugin-laravel" />
       <path value="$PROJECT_DIR$/vendor/pestphp/pest-plugin-parallel" />
+      <path value="$PROJECT_DIR$/vendor/pestphp/pest-plugin-faker" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
