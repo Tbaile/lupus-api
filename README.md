@@ -1,6 +1,6 @@
 ## LupusWeb
 
-[![CI](https://github.com/Tbaile/LupusWeb/actions/workflows/main.yml/badge.svg)](https://github.com/Tbaile/LupusWeb/actions/workflows/main.yml)
+[![CI](https://github.com/Tbaile/LupusWeb/actions/workflows/ci.yml/badge.svg)](https://github.com/Tbaile/LupusWeb/actions/workflows/ci.yml)
 
 LupusWeb is a web engine for the famous game Lupus in Fabula. Powered by Laravel.
 
