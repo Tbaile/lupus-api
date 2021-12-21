@@ -12,7 +12,7 @@ class InviteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'can:update,room']);
+        $this->middleware(['auth:sanctum', 'can:invite,room']);
     }
 
     /**
