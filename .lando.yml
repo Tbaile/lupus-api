@@ -11,9 +11,9 @@ services:
   database:
     portforward: 3307
   node:
-    type: node:14
+    type: node:16
     globals:
-      npm: 7
+      npm: 8
 tooling:
   npm:
     service: node
