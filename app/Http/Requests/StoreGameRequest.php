@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\Room;
-use http\Exception\InvalidArgumentException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -30,9 +29,6 @@ class StoreGameRequest extends FormRequest
     {
         /** @var Room $room */
         $room = $request->route('room');
-        if ($room == null) {
-            abort(422);
-        }
         return [
             'users' => 'required|array|min:1',
             'users.*' => [

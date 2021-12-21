@@ -29,9 +29,6 @@ class StoreRoomInviteRequest extends FormRequest
     {
         /** @var \App\Models\Room $room */
         $room = $request->route('room');
-        if ($room == null) {
-            abort(422);
-        }
         return [
             'users' => 'required|array|min:1',
             'users.*.id' => [
