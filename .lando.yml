@@ -19,3 +19,28 @@ tooling:
     service: node
   npx:
     service: node
+  ide-helper:
+    service: appserver
+    description: Generate IDE helper files
+    cmd:
+      - php artisan ide-helper:generate
+      - php artisan ide-helper:meta
+      - php artisan ide-helper:models -N -p
+  update-deps:
+    description: Update all dependencies of the project
+    cmd:
+      appserver: composer update
+      node: npm update -D && npx mix --production
+  test:
+    service: appserver
+    description: Launch test suite and PhpStan
+    cmd:
+      - php artisan test -p
+      - ./vendor/bin/phpstan
+  coverage:
+    service: appserver
+    description: Launch test suite with coverage enabled
+    cmd: php artisan test -p --coverage
+    env:
+      XDEBUG_MODE: coverage
+
