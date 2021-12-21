@@ -29,8 +29,8 @@ tooling:
   update-deps:
     description: Update all dependencies of the project
     cmd:
-      appserver: composer update
-      node: npm update -D && npx mix --production
+      - appserver: composer update
+      - node: npm update -D && npx mix --production
   test:
     service: appserver
     description: Launch test suite and PhpStan
