@@ -25,16 +25,34 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             type=ref,event=branch
-      - name: Build and push app images
+      - name: Build and load arm64 image
         uses: docker/build-push-action@v2
         with:
           context: .
           file: docker/php/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
+          tags: ${{ steps.meta-app.outputs.tags }}
+          load: true
+          cache-from: type=registry,ref=tbaile/lupus-app:buildcache-arm64
+          cache-to: type=registry,ref=tbaile/lupus-app:buildcache-arm64,mode=max
+      - name: Build and load amd64 images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/php/Dockerfile
+          platforms: linux/amd64
+          tags: ${{ steps.meta-app.outputs.tags }}
+          load: true
+          cache-from: type=registry,ref=tbaile/lupus-app:buildcache-amd64
+          cache-to: type=registry,ref=tbaile/lupus-app:buildcache-amd64,mode=max
+      - name: Push app images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: docker/php/Dockerfile
+          platforms: linux/arm64,linux/amd64
           tags: ${{ steps.meta-app.outputs.tags }}
           push: true
-          cache-from: type=registry,ref=tbaile/lupus-app:buildcache
-          cache-to: type=registry,ref=tbaile/lupus-app:buildcache,mode=max
       - uses: docker/metadata-action@v3
         id: meta-web
         with:
@@ -49,7 +67,7 @@ jobs:
         with:
           context: .
           file: docker/nginx/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64,linux/amd64
           push: true
           tags: ${{ steps.meta-web.outputs.tags }}
           cache-from: type=registry,ref=tbaile/lupus-web:buildcache
