@@ -11,18 +11,6 @@ class RoomFactory extends Factory
 {
 
     /**
-     * Configure the instance of the Room, when created it has to have an owner.
-     *
-     * @return \Database\Factories\RoomFactory|void
-     */
-    public function configure()
-    {
-        return $this->afterCreating(function (Room $room) {
-            $room->users()->attach(User::factory()->create(), ['role' => RoomRoleEnum::OWNER()]);
-        });
-    }
-
-    /**
      * Define the model's default state.
      *
      * @return array
