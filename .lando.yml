@@ -1,4 +1,4 @@
-name: lupusweb
+name: landolupusweb
 recipe: laravel
 config:
   php: '8.0'
