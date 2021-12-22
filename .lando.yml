@@ -30,7 +30,11 @@ tooling:
     description: Update all dependencies of the project
     cmd:
       - appserver: composer update
-      - node: npm update -D && npx mix --production
+      - node: npm update -D
+  mix:
+    service: node
+    description: Run mix inside node container
+    cmd: npx mix
   test:
     service: appserver
     description: Launch test suite and PhpStan
