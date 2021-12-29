@@ -9,7 +9,6 @@ use Illuminate\Testing\Fluent\AssertableJson;
 use function Pest\Faker\faker;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\postJson;
-use function PHPUnit\Framework\assertTrue;
 
 uses(RefreshDatabase::class)->group('room');
 
@@ -91,11 +90,10 @@ test('room not found', function () {
 
 test('users array cannot be empty', function (array $data) {
     /** @var Room $room */
-    $room = Room::factory()->create();
-    /** @var User $owner */
-    $owner = User::factory()->create();
-    $room->users()->attach($owner, ['role' => RoomRoleEnum::OWNER()]);
-    actingAs($owner)
+    $room = Room::factory()
+        ->hasAttached(User::factory(), ['role' => RoomRoleEnum::OWNER()])
+        ->create();
+    actingAs($room->owner())
         ->postJson('/api/room/'.$room->id.'/invite', $data)
         ->assertInvalid(['users']);
 })->with([
@@ -104,11 +102,12 @@ test('users array cannot be empty', function (array $data) {
 ]);
 
 test('invitation user params are invalid', function (mixed $id, mixed $role) {
-    /** @var Room $room */
-    $room = Room::factory()->create();
     /** @var User $owner */
     $owner = User::factory()->create();
-    $room->users()->attach($owner, ['role' => RoomRoleEnum::OWNER()]);
+    /** @var Room $room */
+    $room = Room::factory()
+        ->hasAttached($owner, ['role' => RoomRoleEnum::OWNER()])
+        ->create();
     actingAs($owner)->postJson('/api/room/'.$room->id.'/invite', [
         'users' => [
             [
@@ -129,39 +128,37 @@ test('invitation user params are invalid', function (mixed $id, mixed $role) {
 ]);
 
 test('invite users', function (int $userNumber) {
-    /** @var Room $room */
-    $room = Room::factory()->create();
     /** @var User $owner */
     $owner = User::factory()->create();
-    $room->users()->attach($owner, ['role' => RoomRoleEnum::OWNER()]);
+    /** @var Room $room */
+    $room = Room::factory()
+        ->hasAttached($owner, ['role' => RoomRoleEnum::OWNER()])
+        ->create();
     $users = User::factory()->count($userNumber)->create();
-    $data = $users->map(fn(User $user) => [
-        'id' => $user->id,
-        'role' => faker()->randomElement(RoomRoleEnum::toValues())
-    ]);
-    $expected = $users->map(fn(User $user) => [
-        'id' => $user->id,
-        'name' => $user->name,
-        'email' => $user->email
-    ]);
     actingAs($owner)
         ->postJson('/api/room/'.$room->id.'/invite', [
-            'users' => $data
+            'users' => $users->map(fn(User $user) => [
+                'id' => $user->id,
+                'role' => faker()->randomElement(RoomRoleEnum::toValues())
+            ])
         ])->assertCreated()
         ->assertJson(
             fn(AssertableJson $json) => $json->count('data', $userNumber)
                 ->whereType('data', 'array')
-                ->whereContains('data', $expected->toArray())
+                ->whereContains('data', $users->map(fn(User $user) => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email
+                ]))
         );
 })->with([5, 10, 15]);
 
 test('user can\'t invite people already in the room', function ($role) {
     /** @var Room $room */
-    $room = Room::factory()->create();
-    /** @var User $owner */
-    $owner = User::factory()->create();
-    $room->users()->attach($owner, ['role' => RoomRoleEnum::OWNER()]);
-    actingAs($owner)
+    $room = Room::factory()
+        ->hasAttached(User::factory(), ['role' => RoomRoleEnum::OWNER()])
+        ->create();
+    actingAs($room->owner())
         ->postJson('/api/room/'.$room->id.'/invite', [
             'users' => [
                 [
