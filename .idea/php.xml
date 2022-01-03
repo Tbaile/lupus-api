@@ -140,7 +140,7 @@
   <component name="PhpInterpreters">
     <interpreters>
       <interpreter id="1de2457d-8e67-43f5-af22-ee0d3ec25f0a" name="devwithlando/php:8.0" home="docker://DATA" debugger_id="php.debugger.XDebug" debugger_extension="xdebug">
-        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_IMAGE_NAME="devwithlando/php:8.0-fpm-4" DOCKER_REMOTE_PROJECT_PATH="/opt/project" />
+        <remote_data INTERPRETER_PATH="php" HELPERS_PATH="/opt/.phpstorm_helpers" INITIALIZED="false" VALID="true" RUN_AS_ROOT_VIA_SUDO="false" DOCKER_ACCOUNT_NAME="Docker" DOCKER_IMAGE_NAME="devwithlando/php:8.0-apache-4" DOCKER_REMOTE_PROJECT_PATH="/opt/project" />
       </interpreter>
     </interpreters>
   </component>
