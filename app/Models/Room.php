@@ -22,6 +22,10 @@ class Room extends Model
         'password'
     ];
 
+    protected $casts = [
+        'private' => 'bool'
+    ];
+
     /**
      * Retrieve every user that is a participant of the room.
      * This also fetches the role of the user as pivot.
