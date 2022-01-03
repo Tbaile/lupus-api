@@ -3,6 +3,7 @@
 use App\Enums\RoomRoleEnum;
 use App\Models\Room;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -172,3 +173,84 @@ test('user can\'t invite people already in the room', function ($role) {
     RoomRoleEnum::MANAGER(),
     RoomRoleEnum::PLAYER()
 ]);
+
+test('auth required for index')
+    ->getJson('/api/room')
+    ->assertUnauthorized();
+
+test('user can see public rooms only', function () {
+    /** @var User $user */
+    $user = User::factory()->create();
+    Room::factory()
+        ->hasAttached($user, ['role' => RoomRoleEnum::OWNER()])
+        ->count(5)
+        ->create();
+    /** @var Room $privateRoom */
+    $privateRoom = Room::factory()
+        ->hasAttached(User::factory(), ['role' => RoomRoleEnum::OWNER()])
+        ->private()
+        ->create();
+    actingAs($user)
+        ->getJson('/api/room')
+        ->assertOk()
+        ->assertJsonCount(5, 'data')
+        ->assertJsonMissing(
+            [
+                'id' => $privateRoom->id,
+                'name' => $privateRoom->name,
+                'private' => $privateRoom->private,
+                'owner' => [
+                    'id' => $privateRoom->owner()->id,
+                    'name' => $privateRoom->owner()->name,
+                    'email' => $privateRoom->owner()->email
+                ]
+            ],
+            true
+        );
+});
+
+test('user can see owned rooms', function () {
+    /** @var User $owner */
+    $owner = User::factory()->create();
+    $rooms = Room::factory()
+        ->hasAttached($owner, ['role' => RoomRoleEnum::OWNER()])
+        ->count(3)
+        ->state(new Sequence(
+            ['private' => 1],
+            ['private' => 0],
+        ))->state(new Sequence(
+            [
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'created_at' => now()->subDay(),
+                'updated_at' => now()->subDay()
+            ],
+            [
+                'created_at' => now()->addDay(),
+                'updated_at' => now()->addDay()
+            ]
+        ))
+        ->create()
+        ->load('users');
+    /** @var Room $testCase */
+    $expected = $rooms->sortByDesc('created_at')->map(fn(Room $room) => [
+        'id' => $room->id,
+        'name' => $room->name,
+        'private' => $room->private,
+        'password' => null,
+        'owner' => [
+            'id' => $room->owner()->id,
+            'name' => $room->owner()->name,
+            'email' => $room->owner()->email
+        ]
+    ])->values()->toArray();
+    actingAs($owner)
+        ->getJson('/api/room')
+        ->assertOk()
+        ->assertJson(
+            fn(AssertableJson $json) => $json->has('data',
+                fn(AssertableJson $json) => $json->whereAll($expected))->etc()
+        );
+});

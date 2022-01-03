@@ -6,7 +6,9 @@ use App\Enums\RoomRoleEnum;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Room;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
 {
@@ -14,6 +16,20 @@ class RoomController extends Controller
     {
         $this->middleware('auth:sanctum');
         $this->authorizeResource(Room::class);
+    }
+
+    /**
+     * Return list of rooms, unfiltered.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $rooms = Room::where('private', 0)
+            ->orWhereHas('users', function (Builder $query) {
+                $query->where('id', '=', Auth::user()->id);
+            })->latest()->paginate();
+        return (RoomResource::collection($rooms))->response();
     }
 
     /**

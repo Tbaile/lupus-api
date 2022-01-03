@@ -12,6 +12,16 @@ class RoomPolicy
     use HandlesAuthorization;
 
     /**
+     * Allow access to all users.
+     *
+     * @return bool
+     */
+    public function viewAny(): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can create models.
      *
      * @return bool
