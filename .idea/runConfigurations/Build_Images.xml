@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build Images" type="CompoundRunConfigurationType">
+    <toRun name="Build app image" type="docker-deploy" />
+    <toRun name="Build web image" type="docker-deploy" />
+    <method v="2" />
+  </configuration>
+</component>
