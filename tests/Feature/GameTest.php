@@ -23,14 +23,17 @@ it('can see games created by room', function () {
         ->for($room)
         ->count(5)
         ->create();
+    $expected = $games->map(fn(Game $game) => [
+        'id' => $game->id,
+        'created_at' => $game->created_at->toISOString(),
+        'updated_at' => $game->updated_at->toISOString()
+    ])->toArray();
     actingAs($owner)
         ->getJson('/api/room/'.$room->id.'/game')
         ->assertOk()
         ->assertJson(
-            fn(AssertableJson $json) => $json->has('data', 5,
-                fn(AssertableJson $json) => $json->where('id', $games->first()->id)
-                    ->where('created_at', $games->first()->created_at->toISOString())
-                    ->where('updated_at', $games->first()->updated_at->toISOString()))
+            fn(AssertableJson $json) => $json->has('data',
+                fn(AssertableJson $json) => $json->whereAll($expected))
             ->etc()
         );
 });

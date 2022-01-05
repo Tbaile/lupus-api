@@ -36,8 +36,7 @@ class GameController extends Controller
     {
         $this->authorize('store', [Game::class, $room]);
         $game = new Game();
-        $game->room()->associate($room);
-        $game->save();
+        $room->games()->save($game);
         $game->users()->attach($request->validated()['users']);
         return (new GameResource($game))->response();
     }
