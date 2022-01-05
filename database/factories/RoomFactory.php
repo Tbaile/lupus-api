@@ -2,9 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\RoomRoleEnum;
-use App\Models\Room;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RoomFactory extends Factory
