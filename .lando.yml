@@ -3,7 +3,7 @@ recipe: laravel
 config:
   php: '8.0'
   webroot: public
-  database: mariadb:10.5
+  database: mariadb:10.6
   xdebug: true
   password: postgres
 services:
