@@ -26,8 +26,7 @@ COPY webpack.mix.js .
 COPY tailwind.config.js .
 COPY resources ./resources
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
-RUN npx mix --production \
-    && rm -rf node_modules
+RUN npx mix --production
 
 FROM base as testing
 COPY --chown=www-data:www-data . .
