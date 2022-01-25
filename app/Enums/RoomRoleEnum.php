@@ -9,6 +9,6 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self MANAGER()
  * @method static self PLAYER()
  */
-class RoomRoleEnum extends Enum
+final class RoomRoleEnum extends Enum
 {
 }
