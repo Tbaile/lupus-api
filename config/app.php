@@ -175,6 +175,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * Game related providers
+         */
+        App\Providers\GameProvider::class
     ],
 
     /*
