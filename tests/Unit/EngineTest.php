@@ -4,14 +4,14 @@ use App\Engine\EngineFactory;
 use App\Engine\FairyVote;
 use App\Engine\WolfVote;
 use App\Exceptions\NotImplemented;
-use App\Models\Day;
+use App\Models\Game;
 
 use function PHPUnit\Framework\assertTrue;
 
 test('can make engine', function (array $chain) {
     $handler = (new EngineFactory($chain))->make();
     assertTrue($handler instanceof WolfVote);
-    $handler->handle(new Day(), new \Illuminate\Http\Request());
+    $handler->handle(new \Illuminate\Http\Request(), new Game());
 })->with([
     [
         [

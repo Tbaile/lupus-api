@@ -2,7 +2,7 @@
 
 namespace App\Engine;
 
-use App\Models\Day;
+use App\Models\Game;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,15 +18,15 @@ abstract class Handler
     /**
      * Handle the request, if nothing is returned, pass the request to the next in chain.
      *
-     * @param  \App\Models\Day  $day
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Game  $game
      * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    final public function handle(Day $day, Request $request): ?Response
+    final public function handle(Request $request, Game $game): ?Response
     {
-        $processed = $this->processing($day, $request);
+        $processed = $this->processing($request, $game);
         if (is_null($processed) && !is_null($this->successor)) {
-            $processed = $this->successor->handle($day, $request);
+            $processed = $this->successor->handle($request, $game);
         }
         return $processed;
     }
@@ -34,9 +34,9 @@ abstract class Handler
     /**
      * Process the request and return null to move forward in chain or a Response to return the response.
      *
-     * @param  \App\Models\Day  $day
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Game  $game
      * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    abstract protected function processing(Day $day, Request $request): ?Response;
+    abstract protected function processing(Request $request, Game $game): ?Response;
 }
