@@ -5,12 +5,13 @@ namespace Database\Factories;
 use App\Models\Game;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Day>
+ */
 class DayFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @inerhitDoc
      */
     public function definition(): array
     {

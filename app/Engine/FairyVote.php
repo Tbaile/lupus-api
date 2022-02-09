@@ -2,6 +2,7 @@
 
 namespace App\Engine;
 
+use App\Exceptions\NotImplemented;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

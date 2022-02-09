@@ -4,13 +4,14 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ */
 class RoomFactory extends Factory
 {
 
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @inerhitDoc
      */
     public function definition(): array
     {
@@ -22,7 +23,7 @@ class RoomFactory extends Factory
     /**
      * Add a password to the room.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
      */
     public function withPassword(): Factory
     {
@@ -36,7 +37,7 @@ class RoomFactory extends Factory
     /**
      * Protect the Room, can be accessed only by invite or password.
      *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     * @return \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
      */
     public function private(): Factory
     {
