@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e98b5ae1e3b9530d79f82f5e4ed1563",
+    "content-hash": "8ab85c911f8d98a62e229337583b6c9d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5702,12 +5702,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "c587940d109b20f684a6f496a28e3a1b3e871fbe"
+                "reference": "d584a259f6ad50b1d4c0a2351d87a1e6bb0c7d9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/c587940d109b20f684a6f496a28e3a1b3e871fbe",
-                "reference": "c587940d109b20f684a6f496a28e3a1b3e871fbe",
+                "url": "https://api.github.com/repos/composer/composer/zipball/d584a259f6ad50b1d4c0a2351d87a1e6bb0c7d9b",
+                "reference": "d584a259f6ad50b1d4c0a2351d87a1e6bb0c7d9b",
                 "shasum": ""
             },
             "require": {
@@ -5800,7 +5800,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-15T11:48:39+00:00"
+            "time": "2022-03-15T12:12:04+00:00"
         },
         {
             "name": "composer/metadata-minifier",
@@ -10145,7 +10145,8 @@
         "php": "^8.0",
         "ext-mysqli": "*",
         "ext-pdo": "*",
-        "ext-pdo_mysql": "*"
+        "ext-pdo_mysql": "*",
+        "ext-redis": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

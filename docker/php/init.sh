@@ -10,12 +10,13 @@ cp -r public /app
 echo "Wait for database to come up..."
 wait-for -t 30 "${DB_HOST}:${DB_PORT}"
 if [ "${APP_ENV:-production}" == "production" ]; then
-    echo "Migrating database..."
+    echo "Migrating database"
     php artisan migrate --force --seed
 else
-    echo "Application in development mode, resetting database..."
+    echo "Application in development mode, resetting database"
     php artisan migrate:fresh --force --seed
 fi
-
-echo "Starting up php-fpm."
+echo "Checking if redis is ready..."
+wait-for -t 10 "${REDIS_HOST}:${REDIS_PORT}"
+echo "Starting up php-fpm"
 exec php-fpm

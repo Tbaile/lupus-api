@@ -5,6 +5,7 @@ RUN install-php-extensions \
     mysqli \
     opcache \
     pdo_mysql \
+    redis \
     zip
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 

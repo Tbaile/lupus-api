@@ -7,13 +7,12 @@ services:
             dockerfile: docker/nginx/Dockerfile
             context: .
         restart: unless-stopped
-        healthcheck:
-            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
-            start_period: 10s
         depends_on:
             - app
-        environment:
-            APP_DOMAIN: "${APP_DOMAIN}"
+        ports:
+            -   "80:80"
+        env_file:
+            - .env.compose
         volumes:
             - public:/var/www/html/public:ro
             - storage:/var/www/html/storage
@@ -24,16 +23,14 @@ services:
             dockerfile: docker/php/Dockerfile
             context: .
         restart: unless-stopped
-        healthcheck:
-            test: [ "CMD", "php-fpm-healthcheck" ]
-            start_period: 10s
         depends_on:
             - database
+            - redis
         volumes:
             - public:/app/public
             - storage:/var/www/html/storage
         env_file:
-            - .env
+            - .env.compose
 
     scheduler:
         image: tbaile/lupus-app:latest
@@ -41,15 +38,13 @@ services:
             dockerfile: docker/php/Dockerfile
             context: .
         restart: unless-stopped
-        healthcheck:
-            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
-            start_period: 10s
         depends_on:
             - database
+            - redis
         volumes:
             - storage:/var/www/html/storage
         env_file:
-            - .env
+            - .env.compose
         command: [ "scheduler" ]
     queue:
         image: tbaile/lupus-app:latest
@@ -57,29 +52,24 @@ services:
             dockerfile: docker/php/Dockerfile
             context: .
         restart: unless-stopped
-        healthcheck:
-            test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
-            start_period: 10s
         depends_on:
             - database
+            - redis
         volumes:
             - storage:/var/www/html/storage
         env_file:
-            - .env
+            - .env.compose
         command: [ "queue" ]
     database:
         image: mariadb:10.6
         restart: unless-stopped
-        healthcheck:
-            test: [ "CMD-SHELL", "mysqladmin --user=$DB_USERNAME --password=$DB_PASSWORD ping --silent" ]
-            start_period: 10s
         volumes:
             - database:/var/lib/mysql
-        environment:
-            MARIADB_RANDOM_ROOT_PASSWORD: "true"
-            MARIADB_DATABASE: "${DB_DATABASE}"
-            MARIADB_USER: "${DB_USERNAME}"
-            MARIADB_PASSWORD: "${DB_PASSWORD}"
+        env_file:
+            - .env.compose
+    redis:
+        image: redis
+        restart: unless-stopped
 
 volumes:
     storage:
