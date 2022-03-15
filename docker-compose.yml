@@ -1,71 +1,85 @@
-version: '3.4'
+version: '3.8'
 
 services:
     web:
         image: tbaile/lupus-web:latest
+        build:
+            dockerfile: docker/nginx/Dockerfile
+            context: .
         restart: unless-stopped
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
+            start_period: 10s
         depends_on:
             - app
+        environment:
+            APP_DOMAIN: "${APP_DOMAIN}"
         volumes:
             - public:/var/www/html/public:ro
             - storage:/var/www/html/storage
-        environment:
-            APP_DOMAIN: "${APP_DOMAIN}"
-        healthcheck:
-            test: ["CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost"]
-            start_period: 10s
+
     app:
         image: tbaile/lupus-app:latest
+        build:
+            dockerfile: docker/php/Dockerfile
+            context: .
         restart: unless-stopped
-        depends_on:
-            - database
-        env_file:
-            - .env
-        volumes:
-            - public:/app/public
-            - storage:/var/www/html/storage
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
             start_period: 10s
-    scheduler:
-        image: tbaile/lupus-app:latest
-        restart: unless-stopped
         depends_on:
             - database
+        volumes:
+            - public:/app/public
+            - storage:/var/www/html/storage
         env_file:
             - .env
-        volumes:
-            - storage:/var/www/html/storage
+
+    scheduler:
+        image: tbaile/lupus-app:latest
+        build:
+            dockerfile: docker/php/Dockerfile
+            context: .
+        restart: unless-stopped
         healthcheck:
             test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
             start_period: 10s
+        depends_on:
+            - database
+        volumes:
+            - storage:/var/www/html/storage
+        env_file:
+            - .env
         command: [ "scheduler" ]
     queue:
         image: tbaile/lupus-app:latest
+        build:
+            dockerfile: docker/php/Dockerfile
+            context: .
         restart: unless-stopped
-        depends_on:
-            - database
-        env_file:
-            - .env
-        volumes:
-            - storage:/var/www/html/storage
         healthcheck:
             test: [ "CMD-SHELL", "ps -ef | grep php | grep -v grep" ]
             start_period: 10s
+        depends_on:
+            - database
+        volumes:
+            - storage:/var/www/html/storage
+        env_file:
+            - .env
         command: [ "queue" ]
     database:
         image: mariadb:10.6
         restart: unless-stopped
+        healthcheck:
+            test: [ "CMD-SHELL", "mysqladmin --user=$DB_USERNAME --password=$DB_PASSWORD ping --silent" ]
+            start_period: 10s
+        volumes:
+            - database:/var/lib/mysql
         environment:
             MARIADB_RANDOM_ROOT_PASSWORD: "true"
             MARIADB_DATABASE: "${DB_DATABASE}"
             MARIADB_USER: "${DB_USERNAME}"
             MARIADB_PASSWORD: "${DB_PASSWORD}"
-        volumes:
-            - database:/var/lib/mysql
-        healthcheck:
-            test: [ "CMD-SHELL", "mysqladmin --user=$DB_USERNAME --password=$DB_PASSWORD ping --silent" ]
-            start_period: 10s
 
 volumes:
     storage:
