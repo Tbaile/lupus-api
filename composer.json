@@ -1,11 +1,14 @@
 {
-    "name": "laravel/laravel",
+    "name": "lupus/api",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "API endpoint for the popular game Lupus in Tabula",
     "keywords": [
-        "framework",
-        "laravel"
+        "lupus",
+        "tabula",
+        "api",
+        "game"
     ],
+    "homepage": "https://github.com/Tbaile/LupusWeb",
     "license": "MIT",
     "require": {
         "php": "^8.0",
