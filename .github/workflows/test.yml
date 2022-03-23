@@ -1,0 +1,16 @@
+name: Tests
+on: pull_request
+jobs:
+  test-images:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [linux/amd64, linux/arm64]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/setup-qemu-action@v1
+      - uses: docker/setup-buildx-action@v1
+      - name: Build app image
+        run: docker buildx build --tag tbaile/lupus-app:test --platform ${{ matrix.arch }} --file docker/php/Dockerfile --load --cache-from type=registry,ref=tbaile/lupus-app:cache .
+      - name: Build web image
+        run: docker buildx build --tag tbaile/lupus-web:test --platform ${{ matrix.arch }} --file docker/nginx/Dockerfile --load --cache-from type=registry,ref=tbaile/lupus-app:cache .
