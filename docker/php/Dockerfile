@@ -1,6 +1,6 @@
 FROM php:8.0-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:1.4.23 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:1.5.0 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
     mysqli \
     opcache \
