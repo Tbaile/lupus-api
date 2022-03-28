@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [linux/amd64, linux/arm64]
+        arch: [ amd64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v1
@@ -13,15 +13,16 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v2
         with:
-          platforms: ${{ matrix.arch }}
+          platforms: linux/${{ matrix.arch }}
           file: docker/php/Dockerfile
-          cache-from: type=registry,ref=tbaile/lupus-app:cache
+          cache-from: type=registry,ref=tbaile/lupus-app:cache-${{ matrix.arch }}
+          cache-to: type=registry,ref=tbaile/lupus-app:cache-${{ matrix.arch }},mode=max
           context: .
   test-web:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [ linux/amd64, linux/arm64 ]
+        arch: [ amd64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v1
@@ -29,7 +30,8 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v2
         with:
-          platforms: ${{ matrix.arch }}
+          platforms: linux/${{ matrix.arch }}
           file: docker/nginx/Dockerfile
-          cache-from: type=registry,ref=tbaile/lupus-web:cache
+          cache-from: type=registry,ref=tbaile/lupus-web:cache-${{ matrix.arch }}
+          cache-to: type=registry,ref=tbaile/lupus-web:cache-${{ matrix.arch }},mode=max
           context: .
