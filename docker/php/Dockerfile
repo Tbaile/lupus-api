@@ -1,4 +1,4 @@
-FROM php:8.0-fpm-alpine as base
+FROM php:8.0.17-fpm-alpine as base
 WORKDIR /var/www/html/
 COPY --from=mlocati/php-extension-installer:1.5.0 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
@@ -17,7 +17,7 @@ RUN composer check-platform-reqs --quiet \
     && mv vendor vendor_test \
     && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
 
-FROM node:16-alpine as node
+FROM node:16.14.2-alpine as node
 RUN npm -g install npm@8
 WORKDIR /var/www/html
 COPY package.json .

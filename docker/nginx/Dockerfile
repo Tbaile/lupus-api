@@ -1,4 +1,4 @@
-FROM nginx:stable-alpine
+FROM nginx:1.20.2-alpine
 WORKDIR /var/www/html
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
 COPY docker/nginx/start.sh /usr/local/bin/start
