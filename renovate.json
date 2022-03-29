@@ -4,6 +4,14 @@
     ],
     "packageRules": [
         {
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "matchCurrentVersion": "!/^0/",
+            "automerge": true
+        },
+        {
             "matchPackageNames": ["php", "node"],
             "matchManagers": ["dockerfile"],
             "matchUpdateTypes": "patch"
@@ -16,14 +24,6 @@
         {
             "matchManagers": ["docker-compose"],
             "enabled": false
-        },
-        {
-            "matchUpdateTypes": [
-                "minor",
-                "patch"
-            ],
-            "matchCurrentVersion": "!/^0/",
-            "automerge": true
         }
     ]
 }
