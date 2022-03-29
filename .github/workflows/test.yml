@@ -16,7 +16,6 @@ jobs:
           platforms: linux/${{ matrix.arch }}
           file: docker/php/Dockerfile
           cache-from: type=registry,ref=tbaile/lupus-app:cache-${{ matrix.arch }}
-          cache-to: type=registry,ref=tbaile/lupus-app:cache-${{ matrix.arch }},mode=max
           context: .
   test-web:
     runs-on: ubuntu-latest
@@ -33,5 +32,4 @@ jobs:
           platforms: linux/${{ matrix.arch }}
           file: docker/nginx/Dockerfile
           cache-from: type=registry,ref=tbaile/lupus-web:cache-${{ matrix.arch }}
-          cache-to: type=registry,ref=tbaile/lupus-web:cache-${{ matrix.arch }},mode=max
           context: .
