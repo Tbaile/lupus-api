@@ -4,6 +4,10 @@
     ],
     "packageRules": [
         {
+            "matchManagers": [
+                "npm",
+                "composer"
+            ],
             "matchUpdateTypes": [
                 "minor",
                 "patch"
@@ -12,7 +16,17 @@
             "automerge": true
         },
         {
-            "matchManagers": ["docker-compose", "dockerfile"],
+            "matchManagers": [
+                "dockerfile"
+            ],
+            "matchUpdateTypes": "digest",
+            "schedule": "after 3am on Monday",
+            "automerge": true
+        },
+        {
+            "matchManagers": [
+                "docker-compose"
+            ],
             "enabled": false
         }
     ]
