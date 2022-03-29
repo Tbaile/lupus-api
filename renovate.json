@@ -12,22 +12,7 @@
             "automerge": true
         },
         {
-            "matchPackageNames": ["php"],
-            "matchManagers": ["dockerfile"],
-            "matchUpdateTypes": "patch"
-        },
-        {
-            "matchPackageNames": ["node"],
-            "matchManagers": ["dockerfile"],
-            "matchUpdateTypes": "patch"
-        },
-        {
-            "matchPackageNames": ["mlocati/php-extension-installer"],
-            "matchManagers": ["dockerfile"],
-            "schedule": ["after 3am on Monday"]
-        },
-        {
-            "matchManagers": ["docker-compose"],
+            "matchManagers": ["docker-compose", "dockerfile"],
             "enabled": false
         }
     ]
