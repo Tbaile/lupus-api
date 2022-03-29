@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     web:
-        image: tbaile/lupus-web:latest
+        image: tbaile/lupus-web:develop
         build:
             dockerfile: docker/nginx/Dockerfile
             context: .
@@ -18,7 +18,7 @@ services:
             - storage:/var/www/html/storage
 
     app:
-        image: tbaile/lupus-app:latest
+        image: tbaile/lupus-app:develop
         build:
             dockerfile: docker/php/Dockerfile
             context: .
@@ -33,7 +33,7 @@ services:
             - .env.compose
 
     scheduler:
-        image: tbaile/lupus-app:latest
+        image: tbaile/lupus-app:develop
         build:
             dockerfile: docker/php/Dockerfile
             context: .
@@ -47,7 +47,7 @@ services:
             - .env.compose
         command: [ "scheduler" ]
     queue:
-        image: tbaile/lupus-app:latest
+        image: tbaile/lupus-app:develop
         build:
             dockerfile: docker/php/Dockerfile
             context: .
