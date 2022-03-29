@@ -11,11 +11,11 @@
         {
             "matchPackageNames": ["mlocati/php-extension-installer"],
             "matchManagers": ["dockerfile"],
-            "schedule": ["schedule:earlyMondays"]
+            "schedule": ["after 3am on Monday"]
         },
         {
             "matchManagers": ["docker-compose"],
-            "enable": false
+            "enabled": false
         },
         {
             "matchUpdateTypes": [
