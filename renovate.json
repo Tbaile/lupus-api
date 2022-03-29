@@ -12,7 +12,12 @@
             "automerge": true
         },
         {
-            "matchPackageNames": ["php", "node"],
+            "matchPackageNames": ["php"],
+            "matchManagers": ["dockerfile"],
+            "matchUpdateTypes": "patch"
+        },
+        {
+            "matchPackageNames": ["node"],
             "matchManagers": ["dockerfile"],
             "matchUpdateTypes": "patch"
         },
