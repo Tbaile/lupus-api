@@ -4,6 +4,20 @@
     ],
     "packageRules": [
         {
+            "matchPackageNames": ["php", "node"],
+            "matchManagers": ["dockerfile"],
+            "matchUpdateTypes": "patch"
+        },
+        {
+            "matchPackageNames": ["mlocati/php-extension-installer"],
+            "matchManagers": ["dockerfile"],
+            "schedule": ["schedule:earlyMondays"]
+        },
+        {
+            "matchManagers": ["docker-compose"],
+            "enable": false
+        },
+        {
             "matchUpdateTypes": [
                 "minor",
                 "patch"
