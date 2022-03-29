@@ -19,7 +19,7 @@
             "matchManagers": [
                 "dockerfile"
             ],
-            "matchUpdateTypes": "digest",
+            "matchUpdateTypes": "patch",
             "schedule": "after 3am on Monday",
             "automerge": true
         },
