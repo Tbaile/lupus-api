@@ -24,6 +24,15 @@
             "automerge": true
         },
         {
+            "matchPackageNames": [
+                "php"
+            ],
+            "matchManagers": [
+                "dockerfile"
+            ],
+            "matchCurrentVersion": "~8.0"
+        },
+        {
             "matchManagers": [
                 "docker-compose"
             ],
