@@ -34,7 +34,7 @@ jobs:
           cache-to: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }},mode=max
           context: .
           outputs: type=docker,dest=/tmp/lupus-${{ matrix.image }}-${{ matrix.arch }}.tar
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: lupus-${{ matrix.image }}-${{ matrix.arch }}
           path: /tmp/lupus-${{ matrix.image }}-${{ matrix.arch }}.tar
