@@ -21,4 +21,4 @@ jobs:
           platforms: linux/arm64, linux/amd64
           tags: tbaile/lupus-${{ matrix.image }}-${{ matrix.arch }}
           context: .
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ env.GITHUB_REF_NAME }}
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ env.GITHUB_BASE_REF }}
