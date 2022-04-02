@@ -40,5 +40,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           context: .
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache
-          cache-to: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache,mode=max
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ env.GITHUB_REF_NAME }}
+          cache-to: type=inline
