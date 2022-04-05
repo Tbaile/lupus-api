@@ -20,4 +20,4 @@ jobs:
           file: docker/${{ matrix.dockerfile }}/Dockerfile
           platforms: linux/arm64, linux/amd64
           context: .
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ GITHUB_BASE_REF }}
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:$GITHUB_BASE_REF
