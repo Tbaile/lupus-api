@@ -30,6 +30,11 @@ tooling:
     cmd:
       - appserver: composer update
       - node: npm update -D
+  install-deps:
+    description: Install command for all dependencies
+    cmd:
+      - appserver: composer i
+      - node: npm i
   mix:
     service: node
     description: Run mix inside node container
