@@ -134,6 +134,7 @@
       <path value="$PROJECT_DIR$/vendor/fruitcake/php-cors" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/vendor/phpmyadmin/sql-parser" />
+      <path value="$PROJECT_DIR$/vendor/pestphp/pest-plugin-mock" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
