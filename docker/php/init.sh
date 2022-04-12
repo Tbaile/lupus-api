@@ -9,7 +9,7 @@ echo "Clone the public folder data to the mounted volume"
 cp -r public /app
 echo "Wait for database to come up..."
 wait-for -t 30 "${DB_HOST}:${DB_PORT}"
-if [ "${APP_ENV:-production}" == "production" ]; then
+if [ "${APP_ENV:-production}" = "production" ]; then
     echo "Migrating database"
     php artisan migrate --force --seed
 else
