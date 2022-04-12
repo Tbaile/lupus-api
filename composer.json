@@ -18,7 +18,7 @@
         "ext-redis": "*",
         "guzzlehttp/guzzle": "7.4.2",
         "laravel/framework": "9.7.0",
-        "laravel/sanctum": "2.15.0",
+        "laravel/sanctum": "2.15.1",
         "laravel/tinker": "2.7.2",
         "spatie/laravel-enum": "3.0.1"
     },
