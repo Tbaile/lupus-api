@@ -1,77 +1,77 @@
-version: '3.8'
-
 services:
-    web:
-        image: tbaile/lupus-web:develop
-        build:
-            dockerfile: docker/nginx/Dockerfile
-            context: .
-        restart: unless-stopped
-        depends_on:
-            - app
-        ports:
-            -   "80:80"
-        env_file:
-            - .env.compose
-        volumes:
-            - public:/var/www/html/public:ro
-            - storage:/var/www/html/storage
+  web:
+    image: tbaile/lupus-web:develop
+    build:
+      dockerfile: docker/nginx/Dockerfile
+      context: .
+      x-bake:
+        platforms: linux/amd64
+        cache-from: type=registry,ref=tbaile/lupus-web:develop-cache
+        output: type=docker
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+    volumes:
+      - public:/var/www/html/public:ro
+      - storage:/var/www/html/storage
+    env_file:
+      - .env.compose
 
-    app:
-        image: tbaile/lupus-app:develop
-        build:
-            dockerfile: docker/php/Dockerfile
-            context: .
-        restart: unless-stopped
-        depends_on:
-            - database
-            - redis
-        volumes:
-            - public:/app/public
-            - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
+  app:
+    image: tbaile/lupus-app:develop
+    build:
+      dockerfile: docker/php/Dockerfile
+      context: .
+      x-bake:
+        platforms: linux/amd64
+        cache-from: type=registry,ref=tbaile/lupus-app:develop-cache
+        output: type=docker
+    restart: unless-stopped
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - public:/app/public
+      - storage:/var/www/html/storage
+    env_file:
+      - .env.compose
 
-    scheduler:
-        image: tbaile/lupus-app:develop
-        build:
-            dockerfile: docker/php/Dockerfile
-            context: .
-        restart: unless-stopped
-        depends_on:
-            - database
-            - redis
-        volumes:
-            - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
-        command: [ "scheduler" ]
-    queue:
-        image: tbaile/lupus-app:develop
-        build:
-            dockerfile: docker/php/Dockerfile
-            context: .
-        restart: unless-stopped
-        depends_on:
-            - database
-            - redis
-        volumes:
-            - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
-        command: [ "queue" ]
-    database:
-        image: mariadb:10.6
-        restart: unless-stopped
-        volumes:
-            - database:/var/lib/mysql
-        env_file:
-            - .env.compose
-    redis:
-        image: redis
-        restart: unless-stopped
+  scheduler:
+    image: tbaile/lupus-app:develop
+    restart: unless-stopped
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - storage:/var/www/html/storage
+    env_file:
+      - .env.compose
+    command: [ "scheduler" ]
+  queue:
+    image: tbaile/lupus-app:develop
+    restart: unless-stopped
+    depends_on:
+      - database
+      - redis
+    volumes:
+      - storage:/var/www/html/storage
+    env_file:
+      - .env.compose
+    command: [ "queue" ]
+  database:
+    image: mariadb:10.6
+    restart: unless-stopped
+    volumes:
+      - database:/var/lib/mysql
+    env_file:
+      - .env.compose
+  redis:
+    image: redis
+    restart: unless-stopped
 
 volumes:
-    storage:
-    public:
-    database:
+  storage:
+  public:
+  database:
