@@ -3,16 +3,22 @@ recipe: laravel
 config:
   php: '8.0'
   webroot: public
-  database: mariadb:10.6
+  database: mariadb:10.6.7
   xdebug: true
-  password: postgres
 services:
   database:
     portforward: 3307
   node:
-    type: node:16
-    globals:
-      npm: 8
+    type: compose
+    services:
+      image: node:16.14.2
+      command: tail -f /dev/null
+  cache:
+    type: compose
+    app_mount: false
+    services:
+      image: redis:6.2.6-alpine
+      command: docker-entrypoint.sh redis-server
 tooling:
   npm:
     service: node
