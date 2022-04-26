@@ -4,6 +4,7 @@ _ide_*
 
 ### Docker ###
 docker-compose.override.yml
+.env.compose
 
 # Created by https://www.toptal.com/developers/gitignore/api/linux,laravel,phpstorm
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,laravel,phpstorm
@@ -28,7 +29,6 @@ public_html/hot
 
 storage/*.key
 .env
-.env.compose
 Homestead.yaml
 Homestead.json
 /.vagrant
@@ -112,6 +112,9 @@ atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
 .idea/replstate.xml
+
+# SonarLint plugin
+.idea/sonarlint/
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
 com_crashlytics_export_strings.xml
