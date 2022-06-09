@@ -16,7 +16,7 @@
         "ext-pdo": "*",
         "ext-pdo_mysql": "*",
         "ext-redis": "*",
-        "guzzlehttp/guzzle": "7.4.3",
+        "guzzlehttp/guzzle": "7.4.4",
         "laravel/framework": "v9.17.0",
         "laravel/sanctum": "2.15.1",
         "laravel/tinker": "2.7.2",
