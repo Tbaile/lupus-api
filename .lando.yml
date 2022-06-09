@@ -1,7 +1,7 @@
 name: landolupusweb
 recipe: laravel
 config:
-  php: '8.0'
+  php: '8.1'
   composer_version: '2.3.5'
   webroot: public
   database: mariadb:10.6.7
