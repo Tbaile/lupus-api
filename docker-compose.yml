@@ -8,7 +8,6 @@ services:
         platforms: linux/amd64
         cache-from: type=registry,ref=tbaile/lupus-web:develop
         output: type=docker
-    restart: unless-stopped
     depends_on:
       - app
     ports:
@@ -18,7 +17,6 @@ services:
       - storage:/var/www/html/storage
     env_file:
       - .env.compose
-
   app:
     image: tbaile/lupus-app:develop
     build:
@@ -28,7 +26,6 @@ services:
         platforms: linux/amd64
         cache-from: type=registry,ref=tbaile/lupus-app:develop
         output: type=docker
-    restart: unless-stopped
     depends_on:
       - database
       - redis
@@ -37,10 +34,8 @@ services:
       - storage:/var/www/html/storage
     env_file:
       - .env.compose
-
   scheduler:
     image: tbaile/lupus-app:develop
-    restart: unless-stopped
     depends_on:
       - database
       - redis
@@ -51,7 +46,6 @@ services:
     command: [ "scheduler" ]
   queue:
     image: tbaile/lupus-app:develop
-    restart: unless-stopped
     depends_on:
       - database
       - redis
@@ -62,14 +56,12 @@ services:
     command: [ "queue" ]
   database:
     image: mariadb:10.6.7
-    restart: unless-stopped
     volumes:
       - database:/var/lib/mysql
     env_file:
       - .env.compose
   redis:
     image: redis:6.2.6-alpine
-    restart: unless-stopped
 
 volumes:
   storage:
