@@ -1,4 +1,4 @@
-FROM php:8.0.19-fpm-alpine as base
+FROM php:8.1.6-fpm-alpine as base
 WORKDIR /var/www/html/
 COPY --from=mlocati/php-extension-installer:1.5.20 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
@@ -7,7 +7,7 @@ RUN install-php-extensions \
     pdo_mysql \
     redis \
     zip
-COPY --from=composer:2.3.7 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.3.5 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY composer.json .
