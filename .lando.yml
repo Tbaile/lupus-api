@@ -2,10 +2,11 @@ name: landolupusweb
 recipe: laravel
 config:
   php: '8.1'
-  composer_version: '2.3.5'
+  composer_version: '2.3.7'
   webroot: public
   database: mariadb:10.6.7
-  xdebug: true
+  via: nginx
+  xdebug: "develop,debug"
 services:
   database:
     portforward: 3307
