@@ -30,7 +30,7 @@
             "matchPackageNames": [
                 "php"
             ],
-            "allowedVersions": "<= 8.0"
+            "allowedVersions": "<= 8.1"
         },
         {
             "matchManagers": [
@@ -40,6 +40,15 @@
                 "node"
             ],
             "allowedVersions": "<= 16"
+        },
+        {
+            "matchManagers": [
+                "dockerfile"
+            ],
+            "matchPackageNames": [
+                "node"
+            ],
+            "allowedVersions": "<= 2.3.5"
         },
         {
             "matchManagers": [
