@@ -2,8 +2,7 @@
 
 namespace App\Engine;
 
-use App\Models\Game;
-use Illuminate\Http\Request;
+use App\Enums\CharacterEnum;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -11,22 +10,23 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class Handler
 {
-    public function __construct(private ?Handler $successor = null)
+    protected ?CharacterEnum $character = null;
+
+    public function __construct(private readonly ?Handler $successor = null)
     {
     }
 
     /**
      * Handle the request, if nothing is returned, pass the request to the next in chain.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Game  $game
+     * @param  \App\Engine\EngineData  $engineData
      * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    final public function handle(Request $request, Game $game): ?Response
+    final public function handle(EngineData $engineData): ?Response
     {
-        $processed = $this->processing($request, $game);
+        $processed = $this->processing($engineData);
         if (is_null($processed) && !is_null($this->successor)) {
-            $processed = $this->successor->handle($request, $game);
+            $processed = $this->successor->handle($engineData);
         }
         return $processed;
     }
@@ -34,9 +34,8 @@ abstract class Handler
     /**
      * Process the request and return null to move forward in chain or a Response to return the response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Game  $game
+     * @param  \App\Engine\EngineData  $engineData
      * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    abstract protected function processing(Request $request, Game $game): ?Response;
+    abstract protected function processing(EngineData $engineData): ?Response;
 }

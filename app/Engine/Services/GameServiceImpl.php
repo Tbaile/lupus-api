@@ -2,11 +2,9 @@
 
 namespace App\Engine\Services;
 
+use App\Engine\EngineData;
 use App\Engine\EngineFactory;
 use App\Engine\Handler;
-use App\Enums\CharacterEnum;
-use App\Models\Game;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class GameServiceImpl implements GameService
@@ -18,8 +16,8 @@ class GameServiceImpl implements GameService
         $this->handler = $engine->make();
     }
 
-    function handleRequest(Request $request, Game $game): Response
+    function handleRequest(EngineData $engineData): ?Response
     {
-        return $this->handler->handle($request, $game);
+        return $this->handler->handle($engineData);
     }
 }

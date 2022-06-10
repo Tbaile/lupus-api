@@ -2,8 +2,7 @@
 
 namespace App\Engine\Services;
 
-use App\Models\Game;
-use Illuminate\Http\Request;
+use App\Engine\EngineData;
 use Symfony\Component\HttpFoundation\Response;
 
 interface GameService
@@ -11,9 +10,8 @@ interface GameService
     /**
      * Handles the request given for the selected game.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Game  $game
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param  \App\Engine\EngineData  $engineData
+     * @return \Symfony\Component\HttpFoundation\Response|null
      */
-    function handleRequest(Request $request, Game $game): Response;
+    function handleRequest(EngineData $engineData): ?Response;
 }
