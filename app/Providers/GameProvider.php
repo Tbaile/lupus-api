@@ -15,7 +15,7 @@ class GameProvider extends ServiceProvider
      *
      * @var array
      */
-    public $singletons = [
+    public array $singletons = [
         GameService::class => GameServiceImpl::class
     ];
 
@@ -24,7 +24,7 @@ class GameProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(EngineFactory::class, function () {
             return new EngineFactory(config('engine.chain'));
