@@ -4,6 +4,7 @@ namespace App\Engine;
 
 use App\Enums\CharacterEnum;
 use App\Models\Game;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Spatie\Enum\Enum;
@@ -13,28 +14,18 @@ use TypeError;
 class EngineData
 {
     private CharacterEnum $character;
+    private User $user;
 
     public function __construct(
         private readonly Request $request,
         private readonly Game $game
     ) {
         try {
-            $this->character = CharacterEnum::from(
-                $this->game->users()->whereId($this->request->user()?->id)->firstOrFail()->pivot->character
-            );
+            $this->user =  $this->getGame()->users()->whereId($this->getRequest()->user()?->id)->firstOrFail();
+            $this->character = CharacterEnum::from($this->getUser()->pivot->character);
         } catch (TypeError|ModelNotFoundException) {
             throw new UnprocessableEntityHttpException();
         }
-    }
-
-    /**
-     * Returns the request data.
-     *
-     * @return \Illuminate\Http\Request
-     */
-    public function getRequest(): Request
-    {
-        return $this->request;
     }
 
     /**
@@ -45,6 +36,24 @@ class EngineData
     public function getGame(): Game
     {
         return $this->game;
+    }
+
+    /**
+     * Returns the user that the request is made on, throws exception if not in the game.
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Returns the request data.
+     *
+     * @return \Illuminate\Http\Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
     }
 
     /**

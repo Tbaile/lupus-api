@@ -18,11 +18,12 @@ it('correctly fetches charater inside the game', function () {
     $request = $this->mock(Request::class, function (MockInterface $mock) use ($user) {
         $mock->shouldReceive('user')->andReturn($user);
     });
-    new EngineData($request, $game);
+    $enginedata = new EngineData($request, $game);
+    $this->assertTrue($enginedata->getCharacter()->equals(CharacterEnum::FAIRY()));
 });
 
 it('throws exception if the user doesn\'t exists', function () {
-    new EngineData(new Request(), Game::factory()->create());
+    (new EngineData(new Request(), Game::factory()->create()))->getUser();
 })->throws(UnprocessableEntityHttpException::class);
 
 it('throws exeption if the user doesn\'t belongs to the game', function () {
@@ -30,5 +31,5 @@ it('throws exeption if the user doesn\'t belongs to the game', function () {
     $request = $this->mock(Request::class, function (MockInterface $mock) use ($user) {
         $mock->shouldReceive('user')->andReturn($user);
     });
-    new EngineData($request, Game::factory()->create());
+    (new EngineData($request, Game::factory()->create()))->getUser();
 })->throws(UnprocessableEntityHttpException::class);
