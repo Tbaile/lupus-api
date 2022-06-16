@@ -4,6 +4,7 @@ namespace App\Engine;
 
 use App\Enums\CharacterEnum;
 use App\Models\Game;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Spatie\Enum\Enum;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -18,8 +19,10 @@ class EngineData
         private readonly Game $game
     ) {
         try {
-            $this->character = CharacterEnum::from($this->request->input('character'));
-        } catch (TypeError) {
+            $this->character = CharacterEnum::from(
+                $this->game->users()->whereId($this->request->user()?->id)->firstOrFail()->pivot->character
+            );
+        } catch (TypeError|ModelNotFoundException) {
             throw new UnprocessableEntityHttpException();
         }
     }
