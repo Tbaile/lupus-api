@@ -27,6 +27,25 @@ it('can register a fairy vote', function () {
     $fakeData = $this->mock(EngineData::class, function (MockInterface $mock) {
         $mock->shouldReceive('getCharacter')
             ->andReturn(CharacterEnum::FAIRY());
+        $mock->shouldReceive('isAlive')
+            ->andReturn(true);
     });
     $engine->handleRequest($fakeData);
 })->throws(NotImplemented::class);
+
+it('cannot vote if condition not met', function ($character, $liveness) {
+    /** @var GameService $engine */
+    $engine = $this->app->make(GameService::class);
+    $fakeData = $this->mock(EngineData::class, function (MockInterface $mock) use ($liveness, $character) {
+        $mock->shouldReceive('getCharacter')
+            ->andReturn($character);
+        $mock->shouldReceive('isAlive')
+            ->andReturn($liveness);
+    });
+    expect($engine->handleRequest($fakeData))
+        ->toBeNull();
+})->with([
+    CharacterEnum::WOLF()
+])->with([
+    false
+]);
