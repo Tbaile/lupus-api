@@ -34,7 +34,7 @@ it('can see games created by room', function () {
         ->assertJson(
             fn(AssertableJson $json) => $json->has('data',
                 fn(AssertableJson $json) => $json->whereAll($expected))
-            ->etc()
+                ->etc()
         );
 });
 
