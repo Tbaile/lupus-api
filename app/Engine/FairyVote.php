@@ -6,7 +6,7 @@ use App\Enums\CharacterEnum;
 use App\Exceptions\NotImplemented;
 use Symfony\Component\HttpFoundation\Response;
 
-final class FairyVote extends Handler
+final class FairyVote extends CharacterVoteHandler
 {
     protected function processing(EngineData $engineData): ?Response
     {

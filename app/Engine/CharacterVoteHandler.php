@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * This class is the base of the chain of responsability pattern that is going to be used in the game.
  */
-abstract class Handler
+abstract class CharacterVoteHandler
 {
     protected ?CharacterEnum $character = null;
 
-    public function __construct(private readonly ?Handler $successor = null)
+    public function __construct(private readonly ?CharacterVoteHandler $successor = null)
     {
     }
 

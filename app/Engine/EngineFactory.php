@@ -11,12 +11,12 @@ final class EngineFactory
     {
     }
 
-    public function make(): Handler
+    public function make(): CharacterVoteHandler
     {
         return $this->builder($this->chain);
     }
 
-    private function builder(?array $chain): Handler
+    private function builder(?array $chain): CharacterVoteHandler
     {
         if (!isset($chain[1])) {
             return $this->resolve($chain[0]);
@@ -24,13 +24,13 @@ final class EngineFactory
         return $this->resolve($chain[0], $this->builder(array_slice($chain, 1)));
     }
 
-    private function resolve(string $class, ?Handler $next = null): Handler
+    private function resolve(string $class, ?CharacterVoteHandler $next = null): CharacterVoteHandler
     {
         $instance = (new ReflectionClass($class))->newInstance($next);
-        if ($instance instanceof Handler) {
+        if ($instance instanceof CharacterVoteHandler) {
             return $instance;
         } else {
-            throw new RuntimeException("Class [$class] is not instance of Handler.");
+            throw new RuntimeException("Class [$class] is not instance of CharacterVoteHandler.");
         }
     }
 }

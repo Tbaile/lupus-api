@@ -4,12 +4,12 @@ namespace App\Engine\Services;
 
 use App\Engine\EngineData;
 use App\Engine\EngineFactory;
-use App\Engine\Handler;
+use App\Engine\CharacterVoteHandler;
 use Symfony\Component\HttpFoundation\Response;
 
 class GameServiceImpl implements GameService
 {
-    private Handler $handler;
+    private CharacterVoteHandler $handler;
 
     public function __construct(EngineFactory $engine)
     {
