@@ -47,5 +47,6 @@ it('cannot vote if condition not met', function ($character, $liveness) {
 })->with([
     CharacterEnum::WOLF()
 ])->with([
+    true,
     false
 ]);

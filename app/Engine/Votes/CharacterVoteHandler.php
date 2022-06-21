@@ -2,8 +2,8 @@
 
 namespace App\Engine\Votes;
 
+use App\Engine\Checks\HasChecks;
 use App\Engine\EngineData;
-use App\Enums\CharacterEnum;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class CharacterVoteHandler
 {
-    protected ?CharacterEnum $character = null;
+    use HasChecks;
 
     public function __construct(private readonly ?CharacterVoteHandler $successor = null)
     {

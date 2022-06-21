@@ -15,6 +15,7 @@ class EngineData
 {
     private CharacterEnum $character;
     private User $user;
+    private bool $alive;
 
     public function __construct(
         private readonly Request $request,
@@ -23,6 +24,7 @@ class EngineData
         try {
             $this->user =  $this->getGame()->users()->whereId($this->getRequest()->user()?->id)->firstOrFail();
             $this->character = CharacterEnum::from($this->getUser()->pivot->character);
+            $this->alive = !$this->getUser()->pivot->death;
         } catch (TypeError|ModelNotFoundException) {
             throw new UnprocessableEntityHttpException();
         }
@@ -64,5 +66,13 @@ class EngineData
     public function getCharacter(): CharacterEnum|Enum
     {
         return $this->character;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAlive(): bool
+    {
+        return $this->alive;
     }
 }
