@@ -6,6 +6,7 @@ jobs:
     strategy:
       matrix:
         image: [ app, web ]
+        arch: [ amd64, arm64 ]
         include:
           - image: app
             dockerfile: php
@@ -17,7 +18,7 @@ jobs:
       - uses: docker/setup-buildx-action@v2
       - uses: docker/build-push-action@v3
         with:
-          file: docker/${{ matrix.dockerfile }}/Dockerfile
-          platforms: linux/arm64, linux/amd64
+          file: docker/${{ matrix.dockerfile }}/Dockerfile.${{ matrix.arch }}
+          platforms: linux/${{ matrix.arch }}
           context: .
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:$GITHUB_BASE_REF
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}

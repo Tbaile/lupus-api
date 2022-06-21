@@ -6,11 +6,12 @@ on:
       - develop
   workflow_dispatch:
 jobs:
-  build:
+  build-archs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         image: [ app, web ]
+        arch: [ amd64, arm64 ]
         include:
           - image: app
             dockerfile: php
@@ -33,16 +34,14 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
             type=ref,event=branch
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
+          flavors: |
+            suffix=${{ matrix.arch }},onlatest=true
       - uses: docker/build-push-action@v3
         with:
-          file: docker/${{ matrix.dockerfile }}/Dockerfile
-          platforms: linux/arm64, linux/amd64
+          file: docker/${{ matrix.dockerfile }}/Dockerfile.${{ matrix.arch }}
+          platforms: linux/${{ matrix.arch }}
           tags: ${{ steps.meta.outputs.tags }}
           push: true
           context: .
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ steps.extract_branch.outputs.branch }}
-          cache-to: type=inline
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}
+          cache-to: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}

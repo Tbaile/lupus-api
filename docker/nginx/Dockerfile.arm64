@@ -1,0 +1,10 @@
+FROM nginx:1.22.0-alpine@sha256:f954f5d033be19f9cf95cf3811ba7193d2069d7522263ffe9268e32b093c0e77
+WORKDIR /var/www/html
+ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
+COPY docker/nginx/start.sh /usr/local/bin/start
+RUN chmod u+x /usr/local/bin/wait-for \
+    && chmod u+x /usr/local/bin/start
+COPY docker/nginx/config /etc/nginx
+COPY . .
+ENTRYPOINT ["start"]
+CMD ["nginx", "-g", "daemon off;"]
