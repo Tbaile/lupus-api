@@ -4,7 +4,7 @@ namespace App\Engine\Services;
 
 use App\Engine\EngineData;
 use App\Engine\EngineFactory;
-use App\Engine\CharacterVoteHandler;
+use App\Engine\Votes\CharacterVoteHandler;
 use Symfony\Component\HttpFoundation\Response;
 
 class GameServiceImpl implements GameService

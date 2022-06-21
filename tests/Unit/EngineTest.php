@@ -1,8 +1,8 @@
 <?php
 
 use App\Engine\EngineFactory;
-use App\Engine\FairyVote;
-use App\Engine\WolfVote;
+use App\Engine\Votes\FairyVote;
+use App\Engine\Votes\WolfVote;
 
 use function PHPUnit\Framework\assertTrue;
 

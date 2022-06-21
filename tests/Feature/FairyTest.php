@@ -2,8 +2,8 @@
 
 use App\Engine\EngineData;
 use App\Engine\EngineFactory;
-use App\Engine\FairyVote;
 use App\Engine\Services\GameService;
+use App\Engine\Votes\FairyVote;
 use App\Enums\CharacterEnum;
 use App\Exceptions\NotImplemented;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Engine;
+namespace App\Engine\Votes;
 
+use App\Engine\EngineData;
 use App\Enums\CharacterEnum;
 use App\Exceptions\NotImplemented;
 use Symfony\Component\HttpFoundation\Response;

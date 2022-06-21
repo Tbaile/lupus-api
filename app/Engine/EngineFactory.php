@@ -2,6 +2,7 @@
 
 namespace App\Engine;
 
+use App\Engine\Votes\CharacterVoteHandler;
 use ReflectionClass;
 use RuntimeException;
 
