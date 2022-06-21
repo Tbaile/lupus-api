@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.export_tags.outputs.tags }}
     strategy:
       matrix:
         image: [ app, web ]
@@ -45,3 +47,13 @@ jobs:
           context: .
           cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}
           cache-to: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}
+      - id: export_tags
+        run: |
+          echo "::set-output name=tags::${{ fromJSON(steps.meta.outputs.json).tags }}"
+  manifest:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - run: |
+          echo ${{ needs.export_tags.outputs.tags }}
