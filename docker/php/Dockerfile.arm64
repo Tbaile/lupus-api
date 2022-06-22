@@ -1,4 +1,4 @@
-FROM php:8.1.7-fpm-alpine@sha256:90b9b9060f8e431e115210f411f015f1f354808677045dbd1a5160d787658e9a as base
+FROM php:8.1.7-fpm-alpine@sha256:133fac9a15b41de0120dee354376eb8bf1f558cb3d330baf12e79bc7538ffe16 as base
 WORKDIR /var/www/html/
 COPY --from=mlocati/php-extension-installer:1.5.27 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
