@@ -6,7 +6,7 @@ services:
       context: .
       x-bake:
         platforms: linux/amd64
-        cache-from: type=registry,ref=tbaile/lupus-web:cache-amd64
+        cache-from: type=registry,ref=tbaile/lupus-web:develop-cache-amd64
         output: type=docker
     depends_on:
       - app
@@ -24,7 +24,7 @@ services:
       context: .
       x-bake:
         platforms: linux/amd64
-        cache-from: type=registry,ref=tbaile/lupus-app:cache-amd64
+        cache-from: type=registry,ref=tbaile/lupus-app:develop-cache-amd64
         output: type=docker
     depends_on:
       - database
