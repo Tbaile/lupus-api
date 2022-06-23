@@ -1,5 +1,8 @@
 name: Test-CI
 on:
+  push:
+    branches:
+      - bugfix/fix-multiplatform-cache
   workflow_dispatch:
 jobs:
   build:
