@@ -1,11 +1,12 @@
 name: Tests
 on: pull_request
 jobs:
-  test:
+  test-images:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         image: [ app, web ]
+        arch: [ amd64, arm64 ]
         include:
           - image: app
             dockerfile: php
@@ -18,6 +19,7 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           file: docker/${{ matrix.dockerfile }}/Dockerfile
-          platforms: linux/arm64, linux/amd64
+          platforms: linux/${{ matrix.arch }}
           context: .
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:$GITHUB_BASE_REF
+          target: testing
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ github.base_ref }}-cache-${{ matrix.arch }}
