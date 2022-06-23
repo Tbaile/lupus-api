@@ -31,7 +31,7 @@ jobs:
           push: true
           context: .
           cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:develop-cache-${{ matrix.arch }}
-          cache-to: type=registry,ref=tbaile/lupus-${{ matrix.image }}:develop-cache-${{ matrix.arch }}
+          cache-to: type=registry,ref=tbaile/lupus-${{ matrix.image }}:develop-cache-${{ matrix.arch }},mode=max
   create-manifest:
     runs-on: ubuntu-latest
     needs:
