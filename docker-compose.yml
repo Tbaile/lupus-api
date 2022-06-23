@@ -2,11 +2,11 @@ services:
   web:
     image: tbaile/lupus-web:develop
     build:
-      dockerfile: docker/nginx/Dockerfile.amd64.amd64
+      dockerfile: docker/nginx/Dockerfile
       context: .
       x-bake:
         platforms: linux/amd64
-        cache-from: type=registry,ref=tbaile/lupus-web:develop-amd64
+        cache-from: type=registry,ref=tbaile/lupus-web:cache-amd64
         output: type=docker
     depends_on:
       - app
@@ -20,11 +20,11 @@ services:
   app:
     image: tbaile/lupus-app:develop
     build:
-      dockerfile: docker/php/Dockerfile.amd64
+      dockerfile: docker/php/Dockerfile
       context: .
       x-bake:
         platforms: linux/amd64
-        cache-from: type=registry,ref=tbaile/lupus-app:develop-amd64
+        cache-from: type=registry,ref=tbaile/lupus-app:cache-amd64
         output: type=docker
     depends_on:
       - database

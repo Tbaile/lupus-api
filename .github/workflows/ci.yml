@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - uses: docker/build-push-action@v3
         with:
-          file: docker/${{ matrix.folder }}/Dockerfile.${{ matrix.arch }}
+          file: docker/${{ matrix.folder }}/Dockerfile
           platforms: linux/${{ matrix.arch }}
           tags: tbaile/lupus-${{ matrix.image }}:develop-${{ matrix.arch }}
           push: true

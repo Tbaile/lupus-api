@@ -1,4 +1,4 @@
-FROM php:8.1.7-fpm-alpine@sha256:90b9b9060f8e431e115210f411f015f1f354808677045dbd1a5160d787658e9a as base
+FROM php:8.1.7-fpm-alpine as base
 WORKDIR /var/www/html/
 COPY --from=mlocati/php-extension-installer:1.5.27 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
@@ -17,7 +17,7 @@ RUN composer check-platform-reqs --quiet \
     && mv vendor vendor_test \
     && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
 
-FROM node:16.15.1-alpine@sha256:19fd66cf26b0cb36dda5bbc90b6ac72135d591dce38f79146d4d3c6059c8b5e7 as node
+FROM node:16.15.1-alpine as node
 RUN npm -g install npm@8
 WORKDIR /var/www/html
 COPY package.json .

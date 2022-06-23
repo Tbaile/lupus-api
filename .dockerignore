@@ -8,8 +8,8 @@ bootstrap/cache/
 # database
 database/*.sqlite*
 # docker
-docker/nginx/Dockerfile.*
-docker/php/Dockerfile.*
+docker/nginx/Dockerfile
+docker/php/Dockerfile
 # node
 node_modules/
 # public
