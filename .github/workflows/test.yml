@@ -1,7 +1,7 @@
 name: Tests
 on: pull_request
 jobs:
-  test:
+  test-images:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,4 +21,5 @@ jobs:
           file: docker/${{ matrix.dockerfile }}/Dockerfile.${{ matrix.arch }}
           platforms: linux/${{ matrix.arch }}
           context: .
+          target: testing
           cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}
