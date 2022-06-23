@@ -22,4 +22,4 @@ jobs:
           platforms: linux/${{ matrix.arch }}
           context: .
           target: testing
-          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:cache-${{ matrix.arch }}
+          cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ github.base_ref }}-cache-${{ matrix.arch }}
