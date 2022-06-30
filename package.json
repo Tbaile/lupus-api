@@ -2,23 +2,14 @@
     "name": "lupus-api",
     "private": true,
     "scripts": {
-        "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
-        "prod": "npm run production",
-        "production": "mix --production"
+        "dev": "vite",
+        "build": "vite build"
     },
     "devDependencies": {
         "autoprefixer": "10.4.7",
-        "axios": "0.27.2",
-        "browser-sync": "2.27.10",
-        "browser-sync-webpack-plugin": "2.3.0",
-        "laravel-mix": "6.0.49",
-        "lodash": "4.17.21",
+        "laravel-vite-plugin": "0.2.4",
         "postcss": "8.4.14",
-        "postcss-import": "14.1.0",
-        "tailwindcss": "3.1.3"
+        "tailwindcss": "3.1.3",
+        "vite": "^2.9.13"
     }
 }
