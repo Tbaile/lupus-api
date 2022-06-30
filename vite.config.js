@@ -6,5 +6,8 @@ export default defineConfig({
         laravel([
             'resources/css/app.css'
         ])
-    ]
+    ],
+    server: {
+        host: '0.0.0.0'
+    }
 });
