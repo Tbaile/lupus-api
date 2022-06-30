@@ -55,13 +55,13 @@ services:
       - .env.compose
     command: [ "queue" ]
   database:
-    image: mariadb:10.6.7
+    image: mariadb:10.6.8
     volumes:
       - database:/var/lib/mysql
     env_file:
       - .env.compose
   redis:
-    image: redis:6.2.6-alpine
+    image: redis:6.2.7-alpine
 
 volumes:
   storage:
