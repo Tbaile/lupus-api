@@ -23,11 +23,12 @@ WORKDIR /var/www/html
 COPY package.json .
 COPY package-lock.json .
 RUN npm ci
-COPY webpack.mix.js .
+COPY vite.config.js .
+COPY postcss.config.js .
 COPY tailwind.config.js .
 COPY resources ./resources
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
-RUN npx mix --production
+RUN npm run build
 
 FROM base as testing
 COPY --chown=www-data:www-data . .
