@@ -13,7 +13,7 @@ services:
   node:
     type: compose
     services:
-      image: node:16.14.2
+      image: node:16.15.1
       command: tail -f /dev/null
   cache:
     type: compose
