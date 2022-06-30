@@ -1,60 +1,41 @@
 {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base"
     ],
+    "schedule": [
+        "every weekend"
+    ],
+    "minor": {
+        "automerge": true
+    },
+    "patch": {
+        "automerge": true
+    },
     "packageRules": [
         {
-            "matchManagers": [
-                "npm",
-                "composer"
-            ],
-            "matchUpdateTypes": [
-                "minor",
-                "patch"
-            ],
-            "matchCurrentVersion": "!/^0/",
-            "automerge": true
-        },
-        {
-            "matchManagers": [
-                "dockerfile"
-            ],
-            "matchUpdateTypes": "patch",
-            "schedule": "after 3am on Monday",
-            "automerge": true
-        },
-        {
-            "matchManagers": [
-                "dockerfile"
-            ],
             "matchPackageNames": [
                 "php"
             ],
             "allowedVersions": "<= 8.1"
         },
         {
-            "matchManagers": [
-                "dockerfile"
-            ],
             "matchPackageNames": [
                 "node"
             ],
             "allowedVersions": "<= 16"
         },
         {
-            "matchManagers": [
-                "dockerfile"
-            ],
             "matchPackageNames": [
-                "node"
+                "mariadb"
             ],
-            "allowedVersions": "<= 2.3.5"
+            "allowedVersions": "<= 10.6"
         },
         {
-            "matchManagers": [
-                "docker-compose"
+            "matchPackageNames": [
+                "redis"
             ],
-            "enabled": false
+            "allowedVersions": "<= 6"
         }
     ]
 }
