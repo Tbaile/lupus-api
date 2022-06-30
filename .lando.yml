@@ -4,7 +4,7 @@ config:
   php: '8.1'
   composer_version: '2.3.7'
   webroot: public
-  database: mariadb:10.6.7
+  database: mariadb:10.6.8
   via: nginx
   xdebug: "develop,debug"
 services:
@@ -19,7 +19,7 @@ services:
     type: compose
     app_mount: false
     services:
-      image: redis:6.2.6-alpine
+      image: redis:6.2.7-alpine
       command: docker-entrypoint.sh redis-server
 tooling:
   npm:
