@@ -129,6 +129,7 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
       <path value="$PROJECT_DIR$/vendor/psr/log" />
       <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/jean85/pretty-package-versions" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
