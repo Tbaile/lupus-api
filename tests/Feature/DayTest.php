@@ -8,7 +8,7 @@ use function PHPUnit\Framework\assertTrue;
 
 uses(RefreshDatabase::class);
 
-// TODO: remove this when actions are implemented, not a Feature Test.
+// TODO: when API is ready, throw this test out of the window, not a feature test.
 test('days in game are tested', function () {
     /** @var Game $game */
     $game = Game::factory()->create();

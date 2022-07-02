@@ -1,7 +1,10 @@
 <?php
 
 use App\Engine\Checks\CheckHandler;
+use App\Engine\Checks\FairyCharacterCheck;
 use App\Engine\EngineData;
+use App\Enums\CharacterEnum;
+use Mockery\MockInterface;
 
 it('can create a dummy check', function () {
     $checkFalse = new class extends CheckHandler {
@@ -20,3 +23,22 @@ it('can create a dummy check', function () {
         Mockery::mock(EngineData::class)
     ));
 });
+
+test('FairyCharacterCheck works properly ', function (CharacterEnum $characterEnum, bool $expects) {
+    $engineData = Mockery::mock(EngineData::class, function (MockInterface $mock) use ($characterEnum) {
+        $mock->shouldReceive('getCharacter')
+            ->andReturn($characterEnum);
+    });
+    $fairyCharacterCheck = new FairyCharacterCheck();
+    expect($fairyCharacterCheck->handle($engineData))
+        ->toBe($expects);
+})->with([
+    [
+        CharacterEnum::FAIRY(),
+        true
+    ],
+    [
+        CharacterEnum::WOLF(),
+        false
+    ]
+]);

@@ -2,16 +2,12 @@
 
 namespace App\Engine\Checks;
 
-use App\Engine\EngineData;
 use App\Enums\CharacterEnum;
 
-class FairyCharacterCheck extends CheckHandler
+class FairyCharacterCheck extends CharacterCheck
 {
-    /**
-     * @inerhitDoc
-     */
-    protected function processing(EngineData $engineData): ?bool
+    function getCharacter(): CharacterEnum
     {
-        return $engineData->getCharacter()->equals(CharacterEnum::FAIRY()) ? null : false;
+        return CharacterEnum::FAIRY();
     }
 }

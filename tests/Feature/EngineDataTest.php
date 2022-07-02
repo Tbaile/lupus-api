@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Mockery\MockInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
+// TODO: when API is ready, throw this test out of the window, not a feature test.
 uses(RefreshDatabase::class)->group('engine');
 
 it('correctly fetches charater inside the game', function () {
