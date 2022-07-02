@@ -8,6 +8,9 @@ config:
   via: nginx
   xdebug: "develop,debug"
 services:
+  appserver:
+    build:
+      - composer i
   database:
     portforward: 3307
   node:
