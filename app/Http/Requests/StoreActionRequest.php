@@ -15,7 +15,9 @@ class StoreActionRequest extends FormRequest
      */
     public function authorize(Request $request): bool
     {
-        return $request->route('game')->users->contains($request->user());
+        /** @var \App\Models\Game $game */
+        $game = $request->route('game');
+        return $game->users->contains($request->user());
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Game;
 
+use App\Engine\EngineData;
 use App\Engine\Services\GameService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreActionRequest;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ActionController extends Controller
 {
-    public function __construct(private GameService $gameService)
+    public function __construct(private readonly GameService $gameService)
     {
     }
 
@@ -19,10 +20,10 @@ class ActionController extends Controller
      *
      * @param  \App\Http\Requests\StoreActionRequest  $request
      * @param  \App\Models\Game  $game
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function store(StoreActionRequest $request, Game $game): Response
     {
-        return $this->gameService->handleRequest($request, $game);
+        return $this->gameService->handleRequest(new EngineData($request, $game));
     }
 }

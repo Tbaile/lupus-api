@@ -22,9 +22,9 @@ class EngineData
         private readonly Game $game
     ) {
         try {
-            $this->user =  $this->getGame()->users()->whereId($this->getRequest()->user()?->id)->firstOrFail();
-            $this->character = CharacterEnum::from($this->getUser()->pivot->character);
-            $this->alive = !$this->getUser()->pivot->death;
+            $this->user =  $this->getGame()->users()->where('id', $this->getRequest()->user()?->id)->firstOrFail();
+            $this->character = CharacterEnum::from($this->getUser()->pivot->character); // @phpstan-ignore-line
+            $this->alive = !$this->getUser()->pivot->death; // @phpstan-ignore-line
         } catch (TypeError|ModelNotFoundException) {
             throw new UnprocessableEntityHttpException();
         }

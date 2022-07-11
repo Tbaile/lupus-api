@@ -15,7 +15,7 @@ class Game extends Model
     /**
      * Return the users that take part in the game.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<\App\Models\User>
      */
     public function users(): BelongsToMany
     {
