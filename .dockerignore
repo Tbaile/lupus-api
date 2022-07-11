@@ -13,11 +13,7 @@ docker/php/Dockerfile
 # node
 node_modules/
 # public
-public/css
-public/js
-public/mix-manifest.json
-public/storage
-public/hot
+public/build
 # storage
 ## app
 storage/app/*
