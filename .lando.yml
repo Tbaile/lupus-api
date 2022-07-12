@@ -11,6 +11,8 @@ services:
   appserver:
     build:
       - composer i
+      - php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - php artisan key:generate --ansi
   database:
     portforward: 3307
   node:
@@ -20,6 +22,8 @@ services:
       command: tail -f /dev/null
       ports:
         - "3000:3000"
+    build:
+      - cd /app && npm i && npm run build
     scanner: false
     portforward: 3000
   cache:
