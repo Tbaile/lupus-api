@@ -1,6 +1,7 @@
-### Laravel IDE helper ###
+### Laravel IDE helper, Laravel Idea ###
 *.meta.*
 _ide_*
+.idea/laravel-idea-personal.xml
 
 ### Docker ###
 docker-compose.override.yml
