@@ -59,6 +59,7 @@ vendor/
 .gitattributes
 .gitignore
 .lando.yml
+.nvmrc
 .phpstorm.meta.php
 .phpunit.result.cache
 .styleci.yml
