@@ -14,22 +14,21 @@ abstract class CheckHandler
      * Handle the request, if nothing is returned, pass the request to the next in chain.
      *
      * @param  \App\Engine\EngineData  $engineData
-     * @return bool
+     * @return void
      */
-    final public function handle(EngineData $engineData): bool
+    final public function handle(EngineData $engineData): void
     {
-        $processed = $this->processing($engineData);
-        if (is_null($processed) && !is_null($this->successor)) {
-            $processed = $this->successor->handle($engineData);
+        $this->processing($engineData);
+        if (!is_null($this->successor)) {
+            $this->successor->handle($engineData);
         }
-        return $processed ?? true;
     }
 
     /**
      * Process the request and return null to move forward in chain or false to return error.
      *
      * @param  \App\Engine\EngineData  $engineData
-     * @return bool|null
+     * @return void
      */
-    abstract protected function processing(EngineData $engineData): ?bool;
+    abstract protected function processing(EngineData $engineData): void;
 }

@@ -10,7 +10,7 @@ trait HasChecks
 {
     /**
      * An array of classes that are checks to run against before running the actual request.
-     * @var array $checks
+     * @var array<\App\Engine\Checks\CheckHandler> $checks
      */
     protected array $checks = [];
 
@@ -18,16 +18,14 @@ trait HasChecks
      * Execute all checks.
      *
      * @param  \App\Engine\EngineData  $engineData
-     * @return bool
+     * @return void
      * @throws \ReflectionException
      */
-    protected function runChecks(EngineData $engineData): bool
+    protected function runChecks(EngineData $engineData): void
     {
         if (!empty($this->checks)) {
-            $checks = $this->builder($this->checks);
-            return $checks->handle($engineData);
+            $this->builder($this->checks)->handle($engineData);
         }
-        return true;
     }
 
     /**

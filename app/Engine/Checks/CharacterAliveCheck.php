@@ -2,6 +2,7 @@
 
 namespace App\Engine\Checks;
 
+use App\Engine\Checks\Exceptions\CharacterShouldBeAliveException;
 use App\Engine\EngineData;
 
 class CharacterAliveCheck extends CheckHandler
@@ -9,8 +10,10 @@ class CharacterAliveCheck extends CheckHandler
     /**
      * @inheritDoc
      */
-    protected function processing(EngineData $engineData): ?bool
+    protected function processing(EngineData $engineData): void
     {
-        return $engineData->isAlive();
+        if (!$engineData->isAlive()) {
+            throw new CharacterShouldBeAliveException();
+        }
     }
 }
