@@ -3,6 +3,9 @@
     "extends": [
         "config:base"
     ],
+    "reviewers": [
+        "Tbaile"
+    ],
     "schedule": [
         "every weekend"
     ],
