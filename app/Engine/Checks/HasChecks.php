@@ -10,7 +10,7 @@ trait HasChecks
 {
     /**
      * An array of classes that are checks to run against before running the actual request.
-     * @var array<\App\Engine\Checks\CheckHandler> $checks
+     * @var array<class-string<\App\Engine\Checks\CheckHandler>> $checks
      */
     protected array $checks = [];
 
