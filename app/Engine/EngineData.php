@@ -7,7 +7,7 @@ use App\Models\Game;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Spatie\Enum\Enum;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use TypeError;
 
@@ -22,7 +22,7 @@ class EngineData
         private readonly Game $game
     ) {
         try {
-            $this->user =  $this->getGame()->users()->where('id', $this->getRequest()->user()?->id)->firstOrFail();
+            $this->user = $this->getGame()->users()->where('id', $this->getRequest()->user()?->id)->firstOrFail();
             $this->character = CharacterEnum::from($this->getUser()->pivot->character); // @phpstan-ignore-line
             $this->alive = !$this->getUser()->pivot->death; // @phpstan-ignore-line
         } catch (TypeError|ModelNotFoundException) {
@@ -41,14 +41,6 @@ class EngineData
     }
 
     /**
-     * Returns the user that the request is made on, throws exception if not in the game.
-     */
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    /**
      * Returns the request data.
      *
      * @return \Illuminate\Http\Request
@@ -59,11 +51,19 @@ class EngineData
     }
 
     /**
+     * Returns the user that the request is made on, throws exception if not in the game.
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
      * Returns the user's character.
      *
-     * @return \App\Enums\CharacterEnum|\Spatie\Enum\Enum
+     * @return \App\Enums\CharacterEnum
      */
-    public function getCharacter(): CharacterEnum|Enum
+    public function getCharacter(): CharacterEnum
     {
         return $this->character;
     }
@@ -74,5 +74,17 @@ class EngineData
     public function isAlive(): bool
     {
         return $this->alive;
+    }
+
+    /**
+     * Returns the actions for the latest day of the day based on character given.
+     *
+     * @param  \App\Enums\CharacterEnum  $characterEnum
+     * @return \Illuminate\Support\Collection<\App\Models\Action>
+     */
+    public function getActions(CharacterEnum $characterEnum): Collection
+    {
+        return $this->getGame()->days()->latest()->first()
+            ->actions()->whereJsonContains('data->character', $characterEnum)->get();
     }
 }

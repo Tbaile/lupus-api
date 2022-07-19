@@ -34,6 +34,8 @@ class Game extends Model
 
     /**
      * Return all the days that the game generated so far.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Day>
      */
     public function days(): HasMany
     {

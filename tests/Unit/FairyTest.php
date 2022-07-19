@@ -13,6 +13,6 @@ test('null on every other character', function ($character) {
     );
     expect($fairyHandler->handle($fakeData))
         ->toBeNull();
-})->with([
-    CharacterEnum::WOLF()
-]);
+})->with(
+    fn() => collect(CharacterEnum::cases())->filter(fn(CharacterEnum $value) => !$value->equals(CharacterEnum::FAIRY()))
+);
