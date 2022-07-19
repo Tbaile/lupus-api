@@ -2,6 +2,7 @@
 
 namespace App\Engine\Votes;
 
+use App\Engine\Checks\AlreadyVotedCheck;
 use App\Engine\Checks\CharacterAliveCheck;
 use App\Engine\EngineData;
 use App\Enums\CharacterEnum;
@@ -11,7 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 final class FairyVote extends CharacterVoteHandler
 {
     protected array $checks = [
-        CharacterAliveCheck::class
+        CharacterAliveCheck::class,
+        AlreadyVotedCheck::class
     ];
 
     protected function processing(EngineData $engineData): ?Response
