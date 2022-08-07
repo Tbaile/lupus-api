@@ -20,5 +20,6 @@ jobs:
         with:
           file: docker/${{ matrix.dockerfile }}/Dockerfile
           platforms: linux/${{ matrix.arch }}
+          target: testing
           context: .
           cache-from: type=registry,ref=tbaile/lupus-${{ matrix.image }}:${{ github.base_ref }}-cache-${{ matrix.arch }}

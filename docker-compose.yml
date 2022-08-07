@@ -1,23 +1,21 @@
+name: lupus-api
 services:
-    web:
-        image: tbaile/lupus-web:develop
-        build:
-            dockerfile: docker/nginx/Dockerfile
-            context: .
-            x-bake:
-                platforms: linux/amd64
-                cache-from: type=registry,ref=tbaile/lupus-web:develop-cache-amd64
-                output: type=docker
-        depends_on:
-            - app
-        ports:
-            - "80:80"
+    redis:
+        image: redis:6.2.7-alpine
+        healthcheck:
+            test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+    database:
+        image: mariadb:10.6.8
+        healthcheck:
+            test: [ "CMD", "mysql", "-u${DB_USERNAME}", "-p${DB_PASSWORD}", "-e", "SELECT 1" ]
         volumes:
-            - public:/var/www/html/public:ro
-            - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
-    app:
+            - database:/var/lib/mysql
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: true
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+    setup:
         image: tbaile/lupus-app:develop
         build:
             dockerfile: docker/php/Dockerfile
@@ -34,36 +32,66 @@ services:
             - storage:/var/www/html/storage
         env_file:
             - .env.compose
+        environment:
+            ROLE: "setup"
+    app:
+        image: tbaile/lupus-app:develop
+        healthcheck:
+            test: [ "CMD", "php-fpm-healthcheck" ]
+        depends_on:
+            setup:
+                condition: service_completed_successfully
+        volumes:
+            - public:/app/public
+            - storage:/var/www/html/storage
+        env_file:
+            - .env.compose
     scheduler:
         image: tbaile/lupus-app:develop
         depends_on:
-            - database
-            - redis
+            setup:
+                condition: service_completed_successfully
         volumes:
+            - public:/app/public
             - storage:/var/www/html/storage
-        command: [ "scheduler" ]
         env_file:
             - .env.compose
+        environment:
+            ROLE: "scheduler"
     queue:
         image: tbaile/lupus-app:develop
         depends_on:
-            - database
-            - redis
+            setup:
+                condition: service_completed_successfully
         volumes:
+            - public:/app/public
             - storage:/var/www/html/storage
-        command: [ "queue" ]
         env_file:
             - .env.compose
-    database:
-        image: mariadb:10.6.8
+        environment:
+            ROLE: "queue"
+    web:
+        image: tbaile/lupus-web:develop
+        build:
+            dockerfile: docker/nginx/Dockerfile
+            context: .
+            x-bake:
+                platforms: linux/amd64
+                cache-from: type=registry,ref=tbaile/lupus-web:develop-cache-amd64
+                output: type=docker
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
+        ports:
+            - "80:80"
         volumes:
-            - database:/var/lib/mysql
-        env_file:
-            - .env.compose
-    redis:
-        image: redis:6.2.7-alpine
+            - public:/var/www/html/public:ro
+            - storage:/var/www/html/storage
+        environment:
+            APP_DOMAIN: ${APP_DOMAIN}
+            FPM_URL: app
+            FPM_PORT: 9000
 
 volumes:
-    storage:
-    public:
     database:
+    public:
+    storage:
