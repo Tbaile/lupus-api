@@ -10,7 +10,8 @@ jobs:
       - uses: ./.github/workflows/test.yml
   build-and-push:
     runs-on: ubuntu-latest
-    depends-on: test-app
+    needs:
+      - test-app
     strategy:
       matrix:
         image: [ app, web ]
