@@ -20,4 +20,5 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build
         run: |
+          cp .env.compose.example .env.compose
           docker buildx bake release
