@@ -17,13 +17,6 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
     setup:
         image: tbaile/lupus-app:develop
-        build:
-            dockerfile: docker/php/Dockerfile
-            context: .
-            x-bake:
-                platforms: linux/amd64
-                cache-from: type=registry,ref=tbaile/lupus-app:develop-cache-amd64
-                output: type=docker
         depends_on:
             - database
             - redis
@@ -72,13 +65,6 @@ services:
             ROLE: "queue"
     web:
         image: tbaile/lupus-web:develop
-        build:
-            dockerfile: docker/nginx/Dockerfile
-            context: .
-            x-bake:
-                platforms: linux/amd64
-                cache-from: type=registry,ref=tbaile/lupus-web:develop-cache-amd64
-                output: type=docker
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
         ports:
