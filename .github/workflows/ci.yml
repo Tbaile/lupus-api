@@ -18,7 +18,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build
+      - name: Build images and push
         run: |
           cp .env.compose.example .env.compose
-          docker buildx bake release
+          ./build.sh
