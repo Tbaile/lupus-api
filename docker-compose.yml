@@ -82,9 +82,9 @@ services:
             FPM_PORT: 9000
 
 volumes:
-    database:
-    public:
-    storage:
+    database: {}
+    public: {}
+    storage: {}
 
 secrets:
     env_file:

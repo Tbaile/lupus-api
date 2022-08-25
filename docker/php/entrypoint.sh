@@ -14,7 +14,7 @@ else
     elif [ "$ROLE" = "scheduler" ]; then
         exec tini php artisan schedule:work
     elif [ "$ROLE" = "setup" ]; then
-        php artisan app:setup
+        exec php artisan app:setup
     else
         echo "Unknown role '$ROLE'"
         exit 1
