@@ -45,6 +45,7 @@ target "app-develop" {
     inherits = ["app-amd64"]
     tags = ["tbaile/lupus-app:${TAG}"]
     output = ["type=docker"]
+    target = "production"
 }
 
 target "web" {
