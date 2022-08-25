@@ -24,21 +24,30 @@
         },
         {
             "matchPackageNames": [
+                "composer"
+            ],
+            "automerge": false
+        },
+        {
+            "matchPackageNames": [
                 "node"
             ],
-            "allowedVersions": "<= 16"
+            "allowedVersions": "<= 16",
+            "automerge": false
         },
         {
             "matchPackageNames": [
                 "mariadb"
             ],
-            "allowedVersions": "<= 10.6"
+            "allowedVersions": "<= 10.6",
+            "automerge": false
         },
         {
             "matchPackageNames": [
                 "redis"
             ],
-            "allowedVersions": "<= 6"
+            "allowedVersions": "<= 6",
+            "automerge": false
         }
     ]
 }

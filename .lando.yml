@@ -2,7 +2,7 @@ name: landolupusweb
 recipe: laravel
 config:
   php: '8.1'
-  composer_version: '2.3.8'
+  composer_version: '2.4.0'
   webroot: public
   database: mariadb:10.6.8
   via: nginx
@@ -18,7 +18,7 @@ services:
   node:
     type: compose
     services:
-      image: node:16.16.0
+      image: node:16.17.0
       command: tail -f /dev/null
       ports:
         - "3000:3000"
