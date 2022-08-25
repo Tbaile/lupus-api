@@ -19,6 +19,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build images and push
-        run: |
-          cp .env.compose.example .env.compose
-          ./build.sh
+        run: ./build.sh
