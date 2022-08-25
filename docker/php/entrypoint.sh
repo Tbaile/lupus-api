@@ -14,23 +14,7 @@ else
     elif [ "$ROLE" = "scheduler" ]; then
         exec tini php artisan schedule:work
     elif [ "$ROLE" = "setup" ]; then
-        echo "Waiting for database to come up..."
-        wait-for -t 30 "${DB_HOST}:${DB_PORT}"
-        echo "Checking if redis is ready..."
-        wait-for -t 10 "${REDIS_HOST}:${REDIS_PORT}"
-        echo "Setting up Laravel Framework"
-        php artisan config:cache
-        php artisan view:cache
-        php artisan storage:link
-        echo "Copying the public folder data to the shared volume"
-        cp -r public /app
-        if [ "${APP_ENV:-production}" = "production" ]; then
-            echo "Migrating database"
-            php artisan migrate --force --seed
-        else
-            echo "Application in development mode, resetting database"
-            php artisan migrate:fresh --force --seed
-        fi
+        php artisan app:setup
     else
         echo "Unknown role '$ROLE'"
         exit 1

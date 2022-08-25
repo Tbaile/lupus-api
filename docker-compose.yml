@@ -7,14 +7,14 @@ services:
     database:
         image: mariadb:10.6.8
         healthcheck:
-            test: [ "CMD", "mysql", "-u${DB_USERNAME}", "-p${DB_PASSWORD}", "-e", "SELECT 1" ]
+            test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "SELECT 1" ]
         volumes:
             - database:/var/lib/mysql
         environment:
             MYSQL_RANDOM_ROOT_PASSWORD: true
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_USER: ${DB_USERNAME}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: lupusapi
+            MYSQL_USER: lupusapi
+            MYSQL_PASSWORD: lupusapi
     setup:
         image: tbaile/lupus-app:develop
         depends_on:
@@ -23,8 +23,9 @@ services:
         volumes:
             - public:/app/public
             - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
         environment:
             ROLE: "setup"
     app:
@@ -37,8 +38,9 @@ services:
         volumes:
             - public:/app/public
             - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
     scheduler:
         image: tbaile/lupus-app:develop
         depends_on:
@@ -47,8 +49,9 @@ services:
         volumes:
             - public:/app/public
             - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
         environment:
             ROLE: "scheduler"
     queue:
@@ -59,8 +62,9 @@ services:
         volumes:
             - public:/app/public
             - storage:/var/www/html/storage
-        env_file:
-            - .env.compose
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
         environment:
             ROLE: "queue"
     web:
@@ -73,7 +77,7 @@ services:
             - public:/var/www/html/public:ro
             - storage:/var/www/html/storage
         environment:
-            APP_DOMAIN: ${APP_DOMAIN}
+            APP_DOMAIN: localhost
             FPM_URL: app
             FPM_PORT: 9000
 
@@ -81,3 +85,7 @@ volumes:
     database:
     public:
     storage:
+
+secrets:
+    env_file:
+        file: .env.compose
