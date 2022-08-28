@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74a39804e36595a08a9ea2b81d22ed62",
+    "content-hash": "8c4e08e0ce78598da9d03affdf8b2200",
     "packages": [
         {
             "name": "brick/math",
@@ -6781,16 +6781,16 @@
         },
         {
             "name": "pestphp/pest",
-            "version": "v1.21.3",
+            "version": "v1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest.git",
-                "reference": "66f69617f1e01032e009f783136f129de3476689"
+                "reference": "1c2f1facac4f5573850ba953d85bc377d5ab35dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest/zipball/66f69617f1e01032e009f783136f129de3476689",
-                "reference": "66f69617f1e01032e009f783136f129de3476689",
+                "url": "https://api.github.com/repos/pestphp/pest/zipball/1c2f1facac4f5573850ba953d85bc377d5ab35dd",
+                "reference": "1c2f1facac4f5573850ba953d85bc377d5ab35dd",
                 "shasum": ""
             },
             "require": {
@@ -6858,7 +6858,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest/issues",
-                "source": "https://github.com/pestphp/pest/tree/v1.21.3"
+                "source": "https://github.com/pestphp/pest/tree/v1.22.0"
             },
             "funding": [
                 {
@@ -6890,7 +6890,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-05-12T19:10:25+00:00"
+            "time": "2022-08-28T21:32:39+00:00"
         },
         {
             "name": "pestphp/pest-plugin",
