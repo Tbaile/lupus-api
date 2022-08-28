@@ -5,7 +5,7 @@ services:
         healthcheck:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     database:
-        image: docker.io/mariadb:10.9.2
+        image: docker.io/mariadb:10.6.9
         healthcheck:
             test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "SELECT 1" ]
         volumes:
