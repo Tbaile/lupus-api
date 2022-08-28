@@ -1,11 +1,11 @@
 name: lupus-api
 services:
     redis:
-        image: redis:6.2.7-alpine
+        image: docker.io/redis:6.2.7-alpine
         healthcheck:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     database:
-        image: mariadb:10.6.9
+        image: docker.io/mariadb:10.6.9
         healthcheck:
             test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "SELECT 1" ]
         volumes:
@@ -16,7 +16,7 @@ services:
             MYSQL_USER: lupusapi
             MYSQL_PASSWORD: lupusapi
     setup:
-        image: tbaile/lupus-app:develop
+        image: docker.io/tbaile/lupus-app:develop
         depends_on:
             - database
             - redis
@@ -29,7 +29,7 @@ services:
         environment:
             ROLE: "setup"
     app:
-        image: tbaile/lupus-app:develop
+        image: docker.io/tbaile/lupus-app:develop
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         depends_on:
@@ -42,7 +42,7 @@ services:
             -   source: env_file
                 target: /var/www/html/.env
     scheduler:
-        image: tbaile/lupus-app:develop
+        image: docker.io/tbaile/lupus-app:develop
         depends_on:
             setup:
                 condition: service_completed_successfully
@@ -55,7 +55,7 @@ services:
         environment:
             ROLE: "scheduler"
     queue:
-        image: tbaile/lupus-app:develop
+        image: docker.io/tbaile/lupus-app:develop
         depends_on:
             setup:
                 condition: service_completed_successfully
@@ -68,7 +68,7 @@ services:
         environment:
             ROLE: "queue"
     web:
-        image: tbaile/lupus-web:develop
+        image: docker.io/tbaile/lupus-web:develop
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
         ports:
