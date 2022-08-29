@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="nginx/Dockerfile" type="docker-deploy" factoryName="dockerfile" singleton="false" server-name="Docker">
+  <configuration default="false" name="nginx/Containerfile: Compose Deployment" type="docker-deploy" factoryName="dockerfile" singleton="false" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
         <option name="imageTag" value="tbaile/lupus-web:develop" />
@@ -7,7 +7,7 @@
         <option name="buildKitEnabled" value="true" />
         <option name="buildOnly" value="true" />
         <option name="contextFolderPath" value="." />
-        <option name="sourceFilePath" value="docker/nginx/Dockerfile" />
+        <option name="sourceFilePath" value="docker/nginx/Containerfile" />
       </settings>
     </deployment>
     <method v="2" />

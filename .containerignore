@@ -50,7 +50,7 @@ storage/logs/*
 # composer
 vendor/
 # env file and dev files
-.dockerignore
+.containerignore
 .editorconfig
 .env*
 .gitattributes

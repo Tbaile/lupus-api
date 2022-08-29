@@ -1,10 +1,12 @@
-FROM docker.io/nginx:1.23.1-alpine
+FROM docker.io/nginx:1.23.1-alpine as base
 WORKDIR /var/www/html
+COPY public ./public
+
+FROM base as production
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
-COPY docker/nginx/start.sh /usr/local/bin/start
+COPY containers/nginx/start.sh /usr/local/bin/start
 RUN chmod u+x /usr/local/bin/wait-for \
     && chmod u+x /usr/local/bin/start
-COPY docker/nginx/config /etc/nginx
-COPY public ./public
+COPY containers/nginx/config /etc/nginx
 ENTRYPOINT ["start"]
 CMD ["nginx", "-g", "daemon off;"]
