@@ -7,7 +7,7 @@ services:
     database:
         image: docker.io/mariadb:10.6.9
         healthcheck:
-            test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "SELECT 1" ]
+            test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "'SELECT 1'" ]
         volumes:
             - database:/var/lib/mysql
         environment:
@@ -72,7 +72,7 @@ services:
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
         ports:
-            - "80:80"
+            - "8000:80"
         volumes:
             - public:/var/www/html/public:ro
             - storage:/var/www/html/storage
