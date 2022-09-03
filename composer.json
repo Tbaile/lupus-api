@@ -35,7 +35,7 @@
         "pestphp/pest-plugin-mock": "1.0.3",
         "pestphp/pest-plugin-parallel": "1.2.0",
         "phpunit/phpunit": "9.5.24",
-        "spatie/laravel-ignition": "1.4.0"
+        "spatie/laravel-ignition": "1.4.1"
     },
     "autoload": {
         "psr-4": {
