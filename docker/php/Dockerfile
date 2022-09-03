@@ -1,4 +1,4 @@
-FROM docker.io/php:8.1.9-fpm-alpine as base
+FROM docker.io/php:8.1.10-fpm-alpine as base
 WORKDIR /var/www/html/
 COPY --from=docker.io/mlocati/php-extension-installer:1.5.37 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
