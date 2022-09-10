@@ -21,7 +21,8 @@ build_and_push() {
         --layers \
         --cache-from "$registry/$cache_repo" \
         --cache-to "$registry/$cache_repo" \
-        --jobs 0
+        --jobs 0 \
+	--force-rm
     podman manifest push --all "$registry"/"$1":"$tag" docker://"$registry"/"$1":"$tag"
 }
 
@@ -47,7 +48,7 @@ else
             --layers \
             --cache-from "$registry/$cache_repo" \
             --jobs 0 \
-            --rm
+            --force-rm
         echo "Build test images successful."
         ;;
     develop)
@@ -59,7 +60,7 @@ else
             --cache-from "$registry/$cache_repo" \
             --jobs 0 \
             --tag "$registry/tbaile/lupus-app:develop" \
-            --rm &
+            --force-rm &
         buildah build --file "containers/nginx/Containerfile" \
             --target production \
             --platform linux/amd64 \
@@ -67,7 +68,7 @@ else
             --cache-from "$registry/$cache_repo" \
             --jobs 0 \
             --tag "$registry/tbaile/lupus-web:develop" \
-            --rm &
+            --force-rm &
         wait
         echo "Build local testing images successful."
         ;;
