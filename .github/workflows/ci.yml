@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - develop
+  schedule:
+    - cron: '0 2 * * 1'
 jobs:
   test-app:
     uses: ./.github/workflows/test.yml
