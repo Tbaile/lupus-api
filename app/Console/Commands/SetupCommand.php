@@ -35,8 +35,6 @@ class SetupCommand extends Command
         $this->callSilently('config:cache');
         $this->callSilently('view:cache');
         $this->callSilently('storage:link');
-        $this->info('Copying the public folder data to the shared volume');
-        shell_exec('cp -r public /app');
         if (config('app.env') == 'production') {
             $this->info('Migrating database');
             $this->callSilently('migrate', [

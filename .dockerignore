@@ -11,6 +11,7 @@ database/*.sqlite*
 node_modules/
 # public
 public/build
+public/storage
 # storage
 ## app
 storage/app/*
