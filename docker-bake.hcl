@@ -3,7 +3,7 @@ variable "TAG" {
 }
 
 target "app" {
-    dockerfile = "docker/Containerfile"
+    dockerfile = "containers/Containerfile"
     context = "."
 }
 
@@ -49,7 +49,7 @@ target "app-develop" {
 }
 
 target "web" {
-    dockerfile = "docker/Containerfile"
+    dockerfile = "containers/Containerfile"
     target = "nginx"
     context = "."
 }
