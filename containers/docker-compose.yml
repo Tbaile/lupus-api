@@ -1,0 +1,91 @@
+name: lupus-api
+services:
+    redis:
+        image: docker.io/redis:6.2.7-alpine
+        healthcheck:
+            test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+    database:
+        image: docker.io/mariadb:10.6.9
+        healthcheck:
+            test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "SELECT 1" ]
+        volumes:
+            - database:/var/lib/mysql
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: true
+            MYSQL_DATABASE: lupusapi
+            MYSQL_USER: lupusapi
+            MYSQL_PASSWORD: lupusapi
+    setup:
+        image: docker.io/tbaile/lupus-app:develop
+        depends_on:
+            - database
+            - redis
+        volumes:
+            - public:/app/public
+            - storage:/var/www/html/storage
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+        environment:
+            ROLE: "setup"
+    app:
+        image: docker.io/tbaile/lupus-app:develop
+        healthcheck:
+            test: [ "CMD", "php-fpm-healthcheck" ]
+        depends_on:
+            setup:
+                condition: service_completed_successfully
+        volumes:
+            - public:/app/public
+            - storage:/var/www/html/storage
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+    scheduler:
+        image: docker.io/tbaile/lupus-app:develop
+        depends_on:
+            setup:
+                condition: service_completed_successfully
+        volumes:
+            - public:/app/public
+            - storage:/var/www/html/storage
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+        environment:
+            ROLE: "scheduler"
+    queue:
+        image: docker.io/tbaile/lupus-app:develop
+        depends_on:
+            setup:
+                condition: service_completed_successfully
+        volumes:
+            - public:/app/public
+            - storage:/var/www/html/storage
+        secrets:
+            -   source: env_file
+                target: /var/www/html/.env
+        environment:
+            ROLE: "queue"
+    web:
+        image: docker.io/tbaile/lupus-web:develop
+        healthcheck:
+            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
+        ports:
+            - "80:80"
+        volumes:
+            - public:/var/www/html/public:ro
+            - storage:/var/www/html/storage
+        environment:
+            APP_DOMAIN: localhost
+            FPM_URL: app
+            FPM_PORT: 9000
+
+volumes:
+    database: {}
+    public: {}
+    storage: {}
+
+secrets:
+    env_file:
+        file: .env

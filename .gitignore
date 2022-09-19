@@ -4,8 +4,7 @@ _ide_*
 .idea/laravel-idea-personal.xml
 
 ### Docker ###
-docker-compose.override.yml
-.env.compose
+containers/.env.compose
 
 # Created by https://www.toptal.com/developers/gitignore/api/linux,laravel,phpstorm
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,laravel,phpstorm

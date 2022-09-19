@@ -63,6 +63,6 @@ vendor/
 .styleci.yml
 _ide_helper.php
 _ide_helper_models.php
-docker-compose.yml
+containers/docker-compose.yml
 README.md
 renovate.json
