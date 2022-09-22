@@ -1,4 +1,4 @@
-name: lupus-api
+name: lupus-deployment
 services:
     redis:
         image: redis:6.2.7-alpine
