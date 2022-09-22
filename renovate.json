@@ -18,36 +18,27 @@
     "packageRules": [
         {
             "matchPackageNames": [
-                "docker.io/php"
+                "php"
             ],
             "allowedVersions": "<= 8.1"
         },
         {
             "matchPackageNames": [
-                "docker.io/composer"
+                "node"
             ],
-            "automerge": false
+            "allowedVersions": "<= 16"
         },
         {
             "matchPackageNames": [
-                "docker.io/node"
+                "mariadb"
             ],
-            "allowedVersions": "<= 16",
-            "automerge": false
+            "allowedVersions": "<= 10.6"
         },
         {
             "matchPackageNames": [
-                "docker.io/mariadb"
+                "redis"
             ],
-            "allowedVersions": "<= 10.6",
-            "automerge": false
-        },
-        {
-            "matchPackageNames": [
-                "docker.io/redis"
-            ],
-            "allowedVersions": "<= 6",
-            "automerge": false
+            "allowedVersions": "<= 6"
         }
     ]
 }

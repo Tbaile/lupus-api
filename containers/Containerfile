@@ -1,13 +1,13 @@
-FROM docker.io/php:8.1.10-fpm-alpine as base
+FROM php:8.1.10-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=docker.io/mlocati/php-extension-installer:1.5.37 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:1.5.37 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
     mysqli \
     opcache \
     pdo_mysql \
     redis \
     zip
-COPY --from=docker.io/composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY composer.json .
@@ -17,7 +17,7 @@ RUN composer check-platform-reqs --quiet \
     && mv vendor vendor_test \
     && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
 
-FROM docker.io/node:16.17.0-alpine as node
+FROM node:16.17.0-alpine as node
 RUN npm -g install npm@8
 WORKDIR /var/www/html
 COPY package.json .
@@ -52,7 +52,7 @@ COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
 RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
     && php artisan test --parallel
 
-FROM docker.io/nginx:1.23.1-alpine as nginx
+FROM nginx:1.23.1-alpine as nginx
 WORKDIR /var/www/html
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
 COPY containers/nginx/start.sh /usr/local/bin/start
