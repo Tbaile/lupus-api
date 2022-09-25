@@ -52,18 +52,6 @@ COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
 RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
     && php artisan test --parallel
 
-FROM nginx:1.23.1-alpine as nginx
-WORKDIR /var/www/html
-ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
-COPY containers/nginx/start.sh /usr/local/bin/start
-RUN chmod u+x /usr/local/bin/wait-for \
-    && chmod u+x /usr/local/bin/start
-COPY containers/nginx/config /etc/nginx
-COPY public ./public
-COPY --from=node /var/www/html/public /var/www/html/public
-ENTRYPOINT ["start"]
-CMD ["nginx", "-g", "daemon off;"]
-
 FROM base as production
 RUN apk add --no-cache fcgiwrap \
     netcat-openbsd \

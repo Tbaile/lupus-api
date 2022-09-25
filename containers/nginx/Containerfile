@@ -1,0 +1,30 @@
+FROM php:8.1.10-fpm-alpine as vendor
+COPY --from=composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
+COPY composer.json .
+COPY composer.lock .
+RUN composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist --ignore-platform-reqs
+
+FROM node:16.17.0-alpine as node
+RUN npm -g install npm@8
+WORKDIR /var/www/html
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
+COPY vite.config.js .
+COPY postcss.config.js .
+COPY tailwind.config.js .
+COPY resources ./resources
+COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
+RUN npm run build
+
+FROM nginx:1.23.1-alpine as production
+WORKDIR /var/www/html
+ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
+COPY containers/nginx/start.sh /usr/local/bin/start
+RUN chmod u+x /usr/local/bin/wait-for \
+    && chmod u+x /usr/local/bin/start
+COPY containers/nginx/config /etc/nginx
+COPY public ./public
+COPY --from=node /var/www/html/public /var/www/html/public
+ENTRYPOINT ["start"]
+CMD ["nginx", "-g", "daemon off;"]

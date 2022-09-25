@@ -1,13 +1,30 @@
-name: Tests
+name: Image Testing
 on:
   pull_request:
   workflow_call:
+env:
+  REPOSITORY: tbaile/lupus-api
 jobs:
-  test-app:
+  test-app-image:
+    name: Test app Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v2
       - uses: docker/setup-buildx-action@v2
-      - name: Build test images
-        run: docker buildx bake test
+      - uses: docker/metadata-action@v4
+        id: meta
+        with:
+          images: |
+            ${{ env.REPOSITORY }}-app
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+      - uses: docker/bake-action@v2.2.0
+        with:
+          files: |
+            ./docker-bake.hcl
+          targets: testing
+          set: |
+            *.cache-from=type=registry,ref=${{ env.REPOSITORY }}-app:develop
+            *.cache-from=type=registry,ref=${{ join(fromJSON(steps.meta.outputs.json).tags, ' *.cache-from=type=registry,ref=') }}
