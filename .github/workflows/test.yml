@@ -1,30 +1,44 @@
-name: Image Testing
+name: Testing
 on:
   pull_request:
   workflow_call:
 env:
-  REPOSITORY: tbaile/lupus-api
+  repository: tbaile/lupus-api
 jobs:
   test-app-image:
-    name: Test app Image
-    runs-on: ubuntu-latest
+    name: Test app image
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - arm64
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v2
       - uses: docker/setup-buildx-action@v2
       - uses: docker/metadata-action@v4
-        id: meta
+        id: meta-cache
         with:
           images: |
-            ${{ env.REPOSITORY }}-app
+            ${{ env.repository }}-app
           tags: |
+            type=raw,value=develop
             type=ref,event=branch
             type=ref,event=pr
+          flavor: |
+            latest=false
+            suffix=-cache-${{ matrix.arch }}
+      - id: bake-cache-from
+        run: |
+          tmpfile="$(mktemp)"
+          jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache.outputs.bake-file }} > "$tmpfile"
+          echo "::set-output name=file::$tmpfile"
       - uses: docker/bake-action@v2.2.0
         with:
           files: |
             ./docker-bake.hcl
+            ${{ steps.bake-cache-from.outputs.file }}
           targets: testing
           set: |
-            *.cache-from=type=registry,ref=${{ env.REPOSITORY }}-app:develop
-            *.cache-from=type=registry,ref=${{ join(fromJSON(steps.meta.outputs.json).tags, ' *.cache-from=type=registry,ref=') }}
+            *.platform=linux/${{ matrix.arch }}
