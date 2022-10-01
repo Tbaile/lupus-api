@@ -28,7 +28,7 @@
         "fakerphp/faker": "1.20.0",
         "laravel/sail": "1.16.1",
         "mockery/mockery": "1.5.1",
-        "nunomaduro/collision": "6.3.0",
+        "nunomaduro/collision": "6.3.1",
         "nunomaduro/larastan": "2.2.0",
         "pestphp/pest": "1.22.1",
         "pestphp/pest-plugin-faker": "1.0.0",
