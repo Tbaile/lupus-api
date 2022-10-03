@@ -14,11 +14,15 @@ jobs:
           - amd64
           - arm64
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker/setup-qemu-action@v2
-      - uses: docker/setup-buildx-action@v2
-      - uses: docker/metadata-action@v4
-        id: meta-cache
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Create new buildx builder
+        uses: docker/setup-buildx-action@v2
+      - name: Generate cache-from tags
+        uses: docker/metadata-action@v4
+        id: meta-cache-from
         with:
           images: |
             ${{ env.repository }}-app
@@ -29,16 +33,17 @@ jobs:
           flavor: |
             latest=false
             suffix=-cache-${{ matrix.arch }}
-      - id: bake-cache-from
+      - name: Transform cache tags
+        id: bake-cache
         run: |
-          tmpfile="$(mktemp)"
-          jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache.outputs.bake-file }} > "$tmpfile"
-          echo "::set-output name=file::$tmpfile"
+          cache_from_file="$(mktemp)"
+          jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
+          echo "::set-output name=cache-from::$cache_from_file"
       - uses: docker/bake-action@v2.2.0
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.bake-cache-from.outputs.file }}
+            ${{ steps.bake-cache.outputs.cache-from }}
           targets: testing
           set: |
             *.platform=linux/${{ matrix.arch }}
