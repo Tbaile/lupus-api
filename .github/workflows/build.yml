@@ -11,10 +11,8 @@ on:
         required: false
       dockerhub_token:
         required: false
-
 env:
   repository: tbaile/lupus-api
-
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
@@ -38,7 +36,6 @@ jobs:
         uses: docker/metadata-action@v4
         id: meta
         with:
-          bake-target: ${{ matrix.image }}-release
           images: |
             ${{ env.repository }}-${{ matrix.image }}
           tags: |
@@ -89,7 +86,8 @@ jobs:
         with:
           username: ${{ secrets.dockerhub_username }}
           password: ${{ secrets.dockerhub_token }}
-      - uses: docker/bake-action@v2.2.0
+      - name: Build ${{ matrix.image }}-release target
+        uses: docker/bake-action@v2.2.0
         with:
           targets: ${{ matrix.image }}-release
           set: |

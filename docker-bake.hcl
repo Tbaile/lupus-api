@@ -6,7 +6,11 @@ variable "REPOSITORY" {
     default = "tbaile/lupus-api"
 }
 
+# Docker Metadata Action Placeholder
+target "docker-metadata-action" {}
+
 target "base" {
+    inherits = ["docker-metadata-action"]
     target = "production"
     context = "."
 }
