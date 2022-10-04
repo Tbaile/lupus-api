@@ -1,6 +1,8 @@
 name: Testing
 on:
   pull_request:
+    branches:
+      - develop
   workflow_call:
 env:
   repository: tbaile/lupus-api

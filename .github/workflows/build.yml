@@ -1,16 +1,11 @@
 name: Build
 on:
   workflow_call:
-    inputs:
-      push:
-        type: boolean
-        required: false
-        default: false
     secrets:
       dockerhub_username:
-        required: false
+        required: true
       dockerhub_token:
-        required: false
+        required: true
 env:
   repository: tbaile/lupus-api
 jobs:
@@ -22,9 +17,6 @@ jobs:
         image:
           - app
           - web
-        arch:
-          - amd64
-          - arm64
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -44,9 +36,6 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
-          flavor: |
-            latest=false
-            suffix=-${{ matrix.arch }}
       - name: Generate cache-from tags
         uses: docker/metadata-action@v4
         id: meta-cache-from
@@ -59,7 +48,7 @@ jobs:
             type=ref,event=pr
           flavor: |
             latest=false
-            suffix=-cache-${{ matrix.arch }}
+            suffix=-cache
       - name: Generate cache-to tags
         uses: docker/metadata-action@v4
         id: meta-cache-to
@@ -71,15 +60,15 @@ jobs:
             type=ref,event=pr
           flavor: |
             latest=false
-            suffix=-cache-${{ matrix.arch }}
+            suffix=-cache
       - name: Transform cache tags
         id: bake-cache
         run: |
           cache_from_file="$(mktemp)"
-          jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
+          jq '{ "target": { "${{ matrix.image }}-release": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
           echo "::set-output name=cache-from::$cache_from_file"
           cache_to_file="$(mktemp)"
-          jq '{ "target": { "testing": { "cache-to": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + . + ",mode=max") } } }' ${{ steps.meta-cache-to.outputs.bake-file }} > "$cache_to_file"
+          jq '{ "target": { "${{ matrix.image }}-release": { "cache-to": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + . + ",mode=max") } } }' ${{ steps.meta-cache-to.outputs.bake-file }} > "$cache_to_file"
           echo "::set-output name=cache-to::$cache_to_file"
       - name: Login to Docker
         uses: docker/login-action@v2
@@ -91,10 +80,10 @@ jobs:
         with:
           targets: ${{ matrix.image }}-release
           set: |
-            *.platform=linux/${{ matrix.arch }}
+            *.platform=linux/arm64,linux/amd64
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
             ${{ steps.bake-cache.outputs.cache-from }}
             ${{ steps.bake-cache.outputs.cache-to }}
-          push: ${{ inputs.push }}
+          push: true

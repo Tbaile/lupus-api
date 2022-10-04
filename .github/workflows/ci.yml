@@ -1,8 +1,8 @@
 name: CI
 on:
   push:
-    branches-ignore:
-      - "renovate/**"
+    branches:
+      - develop
 env:
   REPOSITORY: tbaile/lupus-api
 jobs:
@@ -13,5 +13,3 @@ jobs:
     needs:
       - test-app-image
     secrets: inherit
-    with:
-      push: true
