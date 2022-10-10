@@ -3,6 +3,18 @@ on:
   push:
     branches:
       - develop
+    paths-ignore:
+      - '.idea/**'
+      - '.editorconfg'
+      - '.env.example'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.lando.yml'
+      - '.nvmrc'
+      - '.styleci.yml'
+      - 'renovate.json'
+      - 'README.md'
+      - 'phpstan.neon.dist'
 env:
   REPOSITORY: tbaile/lupus-api
 jobs:

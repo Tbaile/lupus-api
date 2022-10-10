@@ -3,6 +3,18 @@ on:
   pull_request:
     branches:
       - develop
+    paths-ignore:
+      - '.idea/**'
+      - '.editorconfg'
+      - '.env.example'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.lando.yml'
+      - '.nvmrc'
+      - '.styleci.yml'
+      - 'renovate.json'
+      - 'README.md'
+      - 'phpstan.neon.dist'
   workflow_call:
 env:
   repository: tbaile/lupus-api
