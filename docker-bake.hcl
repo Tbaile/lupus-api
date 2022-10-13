@@ -21,7 +21,10 @@ target "app" {
 
 target "app-release" {
     inherits = ["base", "app"]
-    cache-from = ["type=registry,ref=${REPOSITORY}-app:${TAG}"]
+    cache-from = [
+        "type=registry,ref=${REPOSITORY}-app:${TAG}",
+        "type=registry,ref=${REPOSITORY}-app:${TAG}-cache"
+    ]
 }
 
 target "app-develop" {
@@ -36,7 +39,10 @@ target "web" {
 
 target "web-release" {
     inherits = ["base", "web"]
-    cache-from = ["type=registry,ref=${REPOSITORY}-web:${TAG}"]
+    cache-from = [
+        "type=registry,ref=${REPOSITORY}-web:${TAG}",
+        "type=registry,ref=${REPOSITORY}-web:${TAG}-cache"
+    ]
 }
 
 target "web-develop" {
