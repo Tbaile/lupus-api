@@ -40,7 +40,7 @@ COPY --link lang ./lang
 COPY --link public ./public
 COPY --link resources ./resources
 COPY --link routes ./routes
-COPY --chown=www-data:www-data --link storage ./storage
+COPY --chown=www-data:www-data storage ./storage
 COPY --link artisan .
 COPY --link composer.json .
 COPY --link composer.lock .
