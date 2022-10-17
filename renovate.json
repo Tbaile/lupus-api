@@ -8,7 +8,10 @@
         "Tbaile"
     ],
     "schedule": [
-        "every weekend"
+        "at 2:00 am every monday"
+    ],
+    "automergeSchedule": [
+        "at 5:00 am every monday"
     ],
     "patch": {
         "automerge": true
