@@ -8,7 +8,7 @@ RUN install-php-extensions \
     pdo_mysql \
     redis \
     zip
-COPY --from=composer:2.4.2 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.4.3 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY --link composer.json .
