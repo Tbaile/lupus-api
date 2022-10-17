@@ -13,7 +13,7 @@
     "patch": {
         "automerge": true
     },
-    "docker": {
+    "dockerfile": {
         "fileMatch": [
             "(^|/|\\.)Containerfile$",
             "(^|/)Containerfile[^/]*$"
