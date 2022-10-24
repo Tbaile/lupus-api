@@ -19,10 +19,10 @@ target "app" {
     inherits = ["base"]
     dockerfile = "containers/php/Containerfile"
     cache-from = [
-        "type=registry,ref=${REPOSITORY}-app:develop",
-        "type=registry,ref=${REPOSITORY}-app:develop-cache",
-        "type=registry,ref=${REPOSITORY}-app:${TAG}",
-        "type=registry,ref=${REPOSITORY}-app:${TAG}-cache"
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:develop",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:develop-cache",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}-cache"
     ]
 }
 
@@ -39,7 +39,7 @@ target "app-release" {
 
 target "app-develop" {
     inherits = ["app"]
-    tags = ["${REPOSITORY}-app:develop"]
+    tags = ["${REGISTRY}/${REPOSITORY}-app:develop"]
     output = ["type=docker"]
 }
 
@@ -47,10 +47,10 @@ target "web" {
     inherits = ["base"]
     dockerfile = "containers/nginx/Containerfile"
     cache-from = [
-        "type=registry,ref=${REPOSITORY}-web:develop",
-        "type=registry,ref=${REPOSITORY}-web:develop-cache",
-        "type=registry,ref=${REPOSITORY}-web:${TAG}",
-        "type=registry,ref=${REPOSITORY}-web:${TAG}-cache"
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:develop",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:develop-cache",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}-cache"
     ]
 }
 
@@ -67,7 +67,7 @@ target "web-release" {
 
 target "web-develop" {
     inherits = ["web"]
-    tags = ["${REPOSITORY}-web:develop"]
+    tags = ["${REGISTRY}/${REPOSITORY}-web:develop"]
     output = ["type=docker"]
 }
 
