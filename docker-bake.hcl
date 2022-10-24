@@ -1,59 +1,84 @@
-variable "TAG" {
-    default = "develop"
+variable "REGISTRY" {
+    default = "docker.io"
 }
 
 variable "REPOSITORY" {
     default = "tbaile/lupus-api"
 }
 
-# Docker Metadata Action Placeholder
-target "docker-metadata-action" {}
+variable "TAG" {
+    default = "develop"
+}
 
 target "base" {
-    inherits = ["docker-metadata-action"]
     target = "production"
     context = "."
 }
 
 target "app" {
+    inherits = ["base"]
     dockerfile = "containers/php/Containerfile"
-}
-
-target "app-release" {
-    inherits = ["base", "app"]
     cache-from = [
+        "type=registry,ref=${REPOSITORY}-app:develop",
+        "type=registry,ref=${REPOSITORY}-app:develop-cache",
         "type=registry,ref=${REPOSITORY}-app:${TAG}",
         "type=registry,ref=${REPOSITORY}-app:${TAG}-cache"
     ]
 }
 
+target "app-release" {
+    inherits = ["app"]
+    tags = [
+        "${REGISTRY}/${REPOSITORY}-app:${TAG}"
+    ]
+    cache-to = [
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}-cache,mode=max"
+    ]
+    output = ["type=registry"]
+}
+
 target "app-develop" {
-    inherits = ["app-release"]
+    inherits = ["app"]
     tags = ["${REPOSITORY}-app:develop"]
     output = ["type=docker"]
 }
 
 target "web" {
+    inherits = ["base"]
     dockerfile = "containers/nginx/Containerfile"
-}
-
-target "web-release" {
-    inherits = ["base", "web"]
     cache-from = [
+        "type=registry,ref=${REPOSITORY}-web:develop",
+        "type=registry,ref=${REPOSITORY}-web:develop-cache",
         "type=registry,ref=${REPOSITORY}-web:${TAG}",
         "type=registry,ref=${REPOSITORY}-web:${TAG}-cache"
     ]
 }
 
+target "web-release" {
+    inherits = ["web"]
+    tags = [
+        "${REGISTRY}/${REPOSITORY}-web:${TAG}"
+    ]
+    cache-to = [
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}-cache,mode=max"
+    ]
+    output = ["type=registry"]
+}
+
 target "web-develop" {
-    inherits = ["web-release"]
+    inherits = ["web"]
     tags = ["${REPOSITORY}-web:develop"]
     output = ["type=docker"]
 }
 
 target "testing" {
-    inherits = ["app-release"]
+    inherits = ["app-develop"]
     target = "testing"
+    output = [""]
+}
+
+group "release" {
+    targets = ["app-release", "web-release"]
 }
 
 group "develop" {
