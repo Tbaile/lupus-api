@@ -32,20 +32,21 @@ COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN npm run build
 
 FROM base as application
-COPY --link app ./app
-COPY --link bootstrap ./bootstrap
-COPY --link config ./config
-COPY --link database ./database
-COPY --link lang ./lang
-COPY --link public ./public
-COPY --link resources ./resources
-COPY --link routes ./routes
+COPY app ./app
+COPY bootstrap ./bootstrap
+COPY config ./config
+COPY database ./database
+COPY lang ./lang
+COPY public ./public
+COPY resources ./resources
+COPY routes ./routes
 COPY --chown=www-data:www-data storage ./storage
-COPY --link artisan .
-COPY --link composer.json .
-COPY --link composer.lock .
+COPY artisan .
+COPY composer.json .
+COPY composer.lock .
 
-FROM application as testing
+FROM base as testing
+COPY --from=application /var/www/html /var/www/html
 COPY --link tests ./tests
 COPY --link phpunit.xml .
 COPY --from=node /var/www/html/public /var/www/html/public
@@ -53,7 +54,7 @@ COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
 RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
     && php artisan test --parallel
 
-FROM application as production
+FROM base as production
 RUN apk add --no-cache fcgiwrap \
     netcat-openbsd \
     procps \
@@ -64,6 +65,7 @@ COPY --link containers/php/conf.d /usr/local/etc/php/conf.d
 ADD --link https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
 ADD --link https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
 COPY --link containers/php/entrypoint.sh /usr/local/bin/entrypoint
+COPY --from=application /var/www/html /var/www/html
 COPY --from=node /var/www/html/public /var/www/html/public
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN chmod u+x /usr/local/bin/php-fpm-healthcheck \
