@@ -1,22 +1,22 @@
 name: CI
 on:
   push:
-    branches:
-      - develop
+    branches-ignore:
+      - "renovate/**"
     paths-ignore:
       - '.idea/**'
+      - 'containers/.env.example'
+      - 'containers/docker-compose.yml'
       - '.editorconfg'
       - '.env.example'
       - '.gitattributes'
       - '.gitignore'
-      - '.lando.yml'
       - '.nvmrc'
       - '.styleci.yml'
-      - 'renovate.json'
-      - 'README.md'
+      - 'docker-compose.yml'
       - 'phpstan.neon.dist'
-env:
-  REPOSITORY: tbaile/lupus-api
+      - 'README.md'
+      - 'renovate.json'
 jobs:
   test-app-image:
     uses: ./.github/workflows/test.yml
