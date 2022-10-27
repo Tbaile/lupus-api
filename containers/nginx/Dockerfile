@@ -6,5 +6,6 @@ COPY --link containers/nginx/start.sh /usr/local/bin/start
 RUN chmod u+x /usr/local/bin/wait-for \
     && chmod u+x /usr/local/bin/start
 COPY --link containers/nginx/config /etc/nginx
+COPY --link public public
 ENTRYPOINT ["start"]
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,14 +1,8 @@
-# IDEs
-.idea/
-.git/
-.github/
 # bootstrap
 bootstrap/cache/
 !bootstrap/cache/.gitignore
 # database
 database/*.sqlite*
-# node
-node_modules/
 # public
 public/build
 public/storage
@@ -48,21 +42,3 @@ storage/framework/views/*
 ## logs
 storage/logs/*
 !storage/logs/.gitignore
-# composer
-vendor/
-# env file and dev files
-.dockerignore
-.editorconfig
-.env*
-.gitattributes
-.gitignore
-.lando.yml
-.nvmrc
-.phpstorm.meta.php
-.phpunit.result.cache
-.styleci.yml
-_ide_helper.php
-_ide_helper_models.php
-containers/docker-compose.yml
-README.md
-renovate.json

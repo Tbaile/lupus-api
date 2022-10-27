@@ -17,7 +17,7 @@ target "base" {
 
 target "app" {
     inherits = ["base"]
-    dockerfile = "containers/php/Containerfile"
+    dockerfile = "containers/php/Dockerfile"
     cache-from = [
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:develop",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:develop-cache",
@@ -45,7 +45,7 @@ target "app-develop" {
 
 target "web" {
     inherits = ["base"]
-    dockerfile = "containers/nginx/Containerfile"
+    dockerfile = "containers/nginx/Dockerfile"
     cache-from = [
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:develop",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:develop-cache",
