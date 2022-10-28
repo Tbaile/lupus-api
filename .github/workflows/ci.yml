@@ -3,20 +3,6 @@ on:
   push:
     branches-ignore:
       - "renovate/**"
-    paths-ignore:
-      - '.idea/**'
-      - 'containers/.env.example'
-      - 'containers/docker-compose.yml'
-      - '.editorconfg'
-      - '.env.example'
-      - '.gitattributes'
-      - '.gitignore'
-      - '.nvmrc'
-      - '.styleci.yml'
-      - 'docker-compose.yml'
-      - 'phpstan.neon.dist'
-      - 'README.md'
-      - 'renovate.json'
 jobs:
   test-app-image:
     uses: ./.github/workflows/test.yml

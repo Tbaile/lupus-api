@@ -1,22 +1,6 @@
 name: Testing
 on:
   pull_request:
-    branches:
-      - develop
-    paths-ignore:
-      - '.idea/**'
-      - 'containers/.env.example'
-      - 'containers/docker-compose.yml'
-      - '.editorconfg'
-      - '.env.example'
-      - '.gitattributes'
-      - '.gitignore'
-      - '.nvmrc'
-      - '.styleci.yml'
-      - 'docker-compose.yml'
-      - 'phpstan.neon.dist'
-      - 'README.md'
-      - 'renovate.json'
   workflow_call:
 env:
   REPOSITORY: tbaile/lupus-api
@@ -27,17 +11,20 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v2
+
       - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
       - name: Set base Tag
         run: |
           if [ -z "${{ github.ref_name }}" ]; then
-              echo "TAG=${{ github.base_ref }}" >> $GITHUB_ENV
+              echo "TAG=${{ github.event.baseRefName }}" >> $GITHUB_ENV
           else
               echo "TAG=${{ github.ref_name }}" >> $GITHUB_ENV
           fi
+
       - name: Build testing target
         uses: docker/bake-action@v2.3.0
         with:
