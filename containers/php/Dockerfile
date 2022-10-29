@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1.4.3
-FROM --platform=$TARGETPLATFORM php:8.1.11-fpm-alpine as base
+FROM --platform=$TARGETPLATFORM php:8.1.12-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:1.5.43 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:1.5.44 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
     mysqli \
     opcache \
     pdo_mysql \
     redis \
     zip
-COPY --from=composer:2.4.3 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.4.4 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY --link composer.json .
