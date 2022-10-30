@@ -12,14 +12,11 @@
     "automergeSchedule": [
         "at 5:00 am every monday"
     ],
-    "patch": {
+    "minor": {
         "automerge": true
     },
-    "dockerfile": {
-        "fileMatch": [
-            "(^|/|\\.)Containerfile$",
-            "(^|/)Containerfile[^/]*$"
-        ]
+    "patch": {
+        "automerge": true
     },
     "packageRules": [
         {
