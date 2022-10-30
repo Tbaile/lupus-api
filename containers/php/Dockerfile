@@ -18,7 +18,7 @@ RUN composer check-platform-reqs --quiet \
     && mv vendor vendor_test \
     && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
 
-FROM --platform=$BUILDPLATFORM node:16.18.0-alpine as node
+FROM --platform=$BUILDPLATFORM node:18.12.0-alpine as node
 RUN npm -g install npm@8
 WORKDIR /var/www/html
 COPY --link package.json .
