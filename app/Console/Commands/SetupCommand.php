@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class SetupCommand extends Command
 {
@@ -28,28 +30,32 @@ class SetupCommand extends Command
     public function handle(): int
     {
         $this->info('Waiting for database to come up');
-        shell_exec('wait-for -t 30 '.config('database.connections.mysql.host').':'.config('database.connections.mysql.port'));
+        $this->execProcess(['wait-for', '-t', '30', config('database.connections.mysql.host').':'.config('database.connections.mysql.port')]);
         $this->info('Cheching if the redis is ready');
-        shell_exec('wait-for -t 30 '.config('database.redis.cache.host').':'.config('database.redis.cache.port'));
+        $this->execProcess(['wait-for', '-t', '30', config('database.redis.cache.host').':'.config('database.redis.cache.port')]);
+        $this->info('Copying public folder contents to web container...');
+        $this->execProcess(['cp', '-r', 'public', '/app']);
         $this->info('Setting up Laravel');
-        shell_exec('cp -r public /app');
-        $this->callSilently('config:cache');
-        $this->callSilently('view:cache');
-        $this->callSilently('storage:link');
-        if (config('app.env') == 'production') {
-            $this->info('Migrating database');
-            $this->callSilently('migrate', [
-                '--force' => true,
-                '--seed' => true
-            ]);
-        } else {
-            $this->info('Application in development mode, resetting database...');
-            $this->callSilently('migrate:fresh', [
-                '--force' => true,
-                '--seed' => true
-            ]);
-        }
+        $this->call('config:cache');
+        $this->execProcess(['su', '-s', '/bin/sh', '-c', 'php artisan view:cache', 'www-data']);
+        $this->call('storage:link');
+        $this->info('Migrating database');
+        $this->call('migrate', [
+            '--force' => true
+        ]);
         $this->info('Setup completed, exiting.');
         return 0;
+    }
+
+    /**
+     * @param array<String> $command
+     */
+    private function execProcess(array $command): void
+    {
+        $process = new Process($command);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
     }
 }

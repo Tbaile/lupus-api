@@ -9,12 +9,12 @@ if [ -n "$1" ]; then
 else
     if [ "$ROLE" = "app" ]; then
         exec php-fpm
-    elif [ "$ROLE" = "queue" ]; then
-        exec tini php artisan queue:work --verbose --tries=3 --timeout=90
-    elif [ "$ROLE" = "scheduler" ]; then
-        exec tini php artisan schedule:work
     elif [ "$ROLE" = "setup" ]; then
-        exec php artisan app:setup
+        php artisan app:setup
+    elif [ "$ROLE" = "scheduler" ]; then
+        su -s '/bin/sh' -c 'php artisan schedule:work' www-data
+    elif [ "$ROLE" = "queue" ]; then
+        su -s '/bin/sh' -c 'php artisan queue:work --verbose --tries=3 --timeout=90' www-data
     else
         echo "Unknown role '$ROLE'"
         exit 1

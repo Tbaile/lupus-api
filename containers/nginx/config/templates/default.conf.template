@@ -26,7 +26,7 @@ server {
   }
 
   location ~ \.php$ {
-    fastcgi_pass ${FPM_URL}:${FPM_PORT};
+    fastcgi_pass ${FPM_HOST}:${FPM_PORT};
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
     include fastcgi_params;
   }

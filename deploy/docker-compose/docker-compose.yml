@@ -4,6 +4,8 @@ services:
         image: redis:6.2.7-alpine
         healthcheck:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+        volumes:
+            - redis:/data
     database:
         image: mariadb:10.6.10
         healthcheck:
@@ -22,6 +24,7 @@ services:
             - redis
         volumes:
             - public:/app/public
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -35,8 +38,13 @@ services:
         depends_on:
             setup:
                 condition: service_completed_successfully
+        networks:
+            default:
+                aliases:
+                    - app
         volumes:
             - public:/app/public
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -46,7 +54,9 @@ services:
         depends_on:
             setup:
                 condition: service_completed_successfully
+        stop_signal: SIGKILL
         volumes:
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -58,7 +68,9 @@ services:
         depends_on:
             setup:
                 condition: service_completed_successfully
+        stop_signal: SIGKILL
         volumes:
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -69,19 +81,20 @@ services:
         image: tbaile/lupus-api-web:develop
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
+        depends_on:
+            - app
         ports:
             - "80:80"
         volumes:
             - public:/var/www/html/public:ro
-            - storage:/var/www/html/storage
         environment:
-            APP_DOMAIN: localhost
-            FPM_URL: app
-            FPM_PORT: 9000
+            FPM_HOST: app
 
 volumes:
+    redis: {}
     database: {}
     public: {}
+    bootstrap: {}
     storage: {}
 
 secrets:
