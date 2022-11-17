@@ -67,9 +67,9 @@
         },
         {
             "matchPackageNames": [
-                "mariadb"
+                "postgres"
             ],
-            "allowedVersions": "<= 10.6"
+            "allowedVersions": "<= 14.6"
         },
         {
             "matchPackageNames": [
