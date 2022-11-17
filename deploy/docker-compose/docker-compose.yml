@@ -6,21 +6,20 @@ services:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
         volumes:
             - redis:/data
-    database:
-        image: mariadb:10.6.10
+    pgsql:
+        image: postgres:14.6-alpine
         healthcheck:
-            test: [ "CMD", "mysql", "-ulupusapi", "-plupusapi", "-e", "SELECT 1" ]
+            test: ["CMD", "pg_isready", "-q", "-d", "lupusapi", "-U", "lupusapi"]
         volumes:
-            - database:/var/lib/mysql
+            - pgsql:/var/lib/postgresql/data
         environment:
-            MYSQL_RANDOM_ROOT_PASSWORD: true
-            MYSQL_DATABASE: lupusapi
-            MYSQL_USER: lupusapi
-            MYSQL_PASSWORD: lupusapi
+            POSTGRES_DB: 'lupusapi'
+            POSTGRES_USER: 'lupusapi'
+            POSTGRES_PASSWORD: 'lupusapi'
     setup:
         image: tbaile/lupus-api-app:develop
         depends_on:
-            - database
+            - pgsql
             - redis
         volumes:
             - public:/app/public
@@ -38,10 +37,6 @@ services:
         depends_on:
             setup:
                 condition: service_completed_successfully
-        networks:
-            default:
-                aliases:
-                    - app
         volumes:
             - public:/app/public
             - bootstrap:/var/www/html/bootstrap
@@ -84,7 +79,7 @@ services:
         depends_on:
             - app
         ports:
-            - "80:80"
+            - "8888:80"
         volumes:
             - public:/var/www/html/public:ro
         environment:
@@ -92,7 +87,7 @@ services:
 
 volumes:
     redis: {}
-    database: {}
+    pgsql: {}
     public: {}
     bootstrap: {}
     storage: {}
