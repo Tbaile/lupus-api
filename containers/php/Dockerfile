@@ -3,9 +3,9 @@ FROM php:8.1.12-fpm-alpine as base
 WORKDIR /var/www/html/
 COPY --from=mlocati/php-extension-installer:1.5.44 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
-        mysqli \
         opcache \
-        pdo_mysql \
+        pdo_pgsql \
+        pgsql \
         redis \
         zip
 COPY --from=composer:2.4.4 /usr/bin/composer /usr/local/bin/composer
@@ -19,6 +19,7 @@ RUN composer check-platform-reqs \
 FROM base as vendor_test
 COPY composer.json .
 COPY composer.lock .
+COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN composer check-platform-reqs \
     && composer i --no-scripts
 
@@ -49,7 +50,7 @@ COPY composer.json .
 COPY composer.lock .
 
 FROM base as testing
-ENV APP_KEY=base64:Y6qJHTnzxMzrqw3wrm/jMsWACRWTykYARWxw9mkPqC8=
+ENV APP_KEY="base64:Y6qJHTnzxMzrqw3wrm/jMsWACRWTykYARWxw9mkPqC8="
 ENV DB_CONNECTION=sqlite
 ENV DB_DATABASE=:memory:
 RUN install-php-extensions xdebug
