@@ -33,6 +33,7 @@ class StoreRoomInviteRequest extends FormRequest
             'users' => 'required|array|min:1',
             'users.*.id' => [
                 'required',
+                'numeric',
                 'exists:App\Models\User,id',
                 Rule::notIn($room->users()->pluck('id')->toArray())
             ],
