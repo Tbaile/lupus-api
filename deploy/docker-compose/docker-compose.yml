@@ -9,7 +9,7 @@ services:
     pgsql:
         image: postgres:14.6-alpine
         healthcheck:
-            test: ["CMD", "pg_isready", "-q", "-d", "lupusapi", "-U", "lupusapi"]
+            test: [ "CMD", "pg_isready", "-q", "-d", "lupusapi", "-U", "lupusapi" ]
         volumes:
             - pgsql:/var/lib/postgresql/data
         environment:
@@ -86,11 +86,11 @@ services:
             FPM_HOST: app
 
 volumes:
-    redis: {}
-    pgsql: {}
-    public: {}
-    bootstrap: {}
-    storage: {}
+    redis: { }
+    pgsql: { }
+    public: { }
+    bootstrap: { }
+    storage: { }
 
 secrets:
     env_file:
