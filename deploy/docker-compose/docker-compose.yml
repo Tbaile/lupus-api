@@ -75,7 +75,7 @@ services:
     web:
         image: tbaile/lupus-api-web:develop
         healthcheck:
-            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
+            test: [  "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         depends_on:
             - app
         ports:

@@ -12,9 +12,9 @@ else
     elif [ "$ROLE" = "setup" ]; then
         php artisan app:setup
     elif [ "$ROLE" = "scheduler" ]; then
-        su -s '/bin/sh' -c 'php artisan schedule:work' www-data
+        su -s '/bin/sh' -c 'php artisan schedule:work --quiet' www-data
     elif [ "$ROLE" = "queue" ]; then
-        su -s '/bin/sh' -c 'php artisan queue:work --verbose --tries=3 --timeout=90' www-data
+        su -s '/bin/sh' -c 'php artisan queue:work --tries=3 --timeout=90 --quiet' www-data
     else
         echo "Unknown role '$ROLE'"
         exit 1
