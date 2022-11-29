@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4.3
-FROM php:8.1.12-fpm-alpine as base
+FROM php:8.1.13-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:1.5.44 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:1.5.49 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         opcache \
         pdo_pgsql \
@@ -23,7 +23,7 @@ COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN composer check-platform-reqs \
     && composer i --no-scripts
 
-FROM --platform=$BUILDPLATFORM node:18.12.0-alpine as node
+FROM --platform=$BUILDPLATFORM node:18.12.1-alpine as node
 WORKDIR /var/www/html
 COPY package.json .
 COPY package-lock.json .
