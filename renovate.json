@@ -7,10 +7,7 @@
         "Tbaile"
     ],
     "schedule": [
-        "at 2:00 am every monday"
-    ],
-    "automergeSchedule": [
-        "at 5:00 am every monday"
+        "before 1:00pm every monday"
     ],
     "minor": {
         "automerge": true
