@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.4.3
 FROM php:8.1.14-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:2.0.1 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:2.0.2 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         opcache \
         pdo_pgsql \
