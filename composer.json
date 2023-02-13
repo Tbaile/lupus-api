@@ -6,16 +6,16 @@
         "ext-pgsql": "*",
         "ext-redis": "*",
         "guzzlehttp/guzzle": "7.5.0",
-        "laravel/framework": "9.50.2",
+        "laravel/framework": "9.51.0",
         "laravel/sanctum": "3.2.1",
         "laravel/tinker": "2.8.0",
-        "spatie/laravel-enum": "3.0.1"
+        "spatie/laravel-enum": "3.0.2"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "2.13.0",
-        "brianium/paratest": "6.8.1",
+        "brianium/paratest": "6.9.0",
         "fakerphp/faker": "1.21.0",
-        "laravel/sail": "1.19.0",
+        "laravel/sail": "1.20.1",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "6.4.0",
         "nunomaduro/larastan": "2.4.0",
