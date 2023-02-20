@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1.4.3
-FROM php:8.1.15-fpm-alpine as base
+FROM php:8.1.16-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:2.0.2 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:2.0.3 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         opcache \
         pdo_pgsql \
         pgsql \
         redis \
         zip
-COPY --from=composer:2.5.3 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5.4 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY composer.json .
@@ -23,7 +23,7 @@ COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN composer check-platform-reqs \
     && composer i --no-scripts
 
-FROM --platform=$BUILDPLATFORM node:18.14.0-alpine as node
+FROM --platform=$BUILDPLATFORM node:18.14.1-alpine as node
 WORKDIR /var/www/html
 COPY package.json .
 COPY package-lock.json .
