@@ -15,7 +15,7 @@
         "barryvdh/laravel-ide-helper": "2.13.0",
         "brianium/paratest": "6.9.1",
         "fakerphp/faker": "1.21.0",
-        "laravel/sail": "1.21.1",
+        "laravel/sail": "1.21.2",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "6.4.0",
         "nunomaduro/larastan": "2.5.1",
@@ -24,7 +24,7 @@
         "pestphp/pest-plugin-laravel": "1.4.0",
         "pestphp/pest-plugin-mock": "1.0.3",
         "pestphp/pest-plugin-parallel": "1.2.1",
-        "phpunit/phpunit": "9.6.4",
+        "phpunit/phpunit": "9.6.5",
         "spatie/laravel-ignition": "1.6.4"
     },
     "autoload": {
