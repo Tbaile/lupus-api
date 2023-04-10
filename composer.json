@@ -15,7 +15,7 @@
         "barryvdh/laravel-ide-helper": "2.13.0",
         "brianium/paratest": "6.9.1",
         "fakerphp/faker": "1.21.0",
-        "laravel/sail": "1.21.3",
+        "laravel/sail": "1.21.4",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "6.4.0",
         "nunomaduro/larastan": "2.5.1",
