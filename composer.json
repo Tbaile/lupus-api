@@ -21,7 +21,7 @@
         "nunomaduro/larastan": "2.6.0",
         "pestphp/pest": "1.23.0",
         "pestphp/pest-plugin-faker": "1.0.0",
-        "pestphp/pest-plugin-laravel": "1.4.0",
+        "pestphp/pest-plugin-laravel": "2.0.0",
         "pestphp/pest-plugin-mock": "1.0.3",
         "pestphp/pest-plugin-parallel": "1.2.1",
         "phpunit/phpunit": "9.6.7",
